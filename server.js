@@ -30,7 +30,10 @@ app.get('/api/users', (req,res,next) => {
     db.Users.findAll({ raw: true })
         .then((results) => {
 
-            res.send(results)
-            
+            if (results) {
+                res.render('renderUsers', {
+                    users: results
+                })
+            }
         });
 });
