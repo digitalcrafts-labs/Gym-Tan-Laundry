@@ -3,10 +3,7 @@ require('dotenv').config();
 module.exports = 
 {
   development: {
-    username: process.env.PG_USER,
-    password: process.env.PG_PASS,
-    database: "gtl_users",
-    host: "127.0.0.1",
+    use_env_variable: "LOCAL_DB",
     dialect: "postgres",
     operatorsAliases: false
   },
