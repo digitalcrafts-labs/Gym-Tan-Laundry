@@ -32,7 +32,7 @@ app.get('/api/users', (req,res,next) => {
 
             if (results) {
                 res.render('renderUsers', {
-                    users: results
+                    users: JSON.stringify(results)
                 })
             }
         });
