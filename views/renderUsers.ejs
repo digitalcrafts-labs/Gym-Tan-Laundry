@@ -15,7 +15,19 @@
         <strong>
             Stuff in Here:
             <br>
-            <%= users %>
+            <ul>
+           <% for (var i=0; i<data.length; i++) { %>
+                <li><%= data[i].username %>
+                    <br>
+                    <%= data[i].email %>
+                    <br>
+                    <%= data[i].bio %>
+                </li>
+                <br>
+                
+
+            <% } %>
+            </ul>
         </strong>
     </div>
 </body>
