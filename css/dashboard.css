@@ -1,0 +1,31 @@
+#profileContainer {
+    background-color: lightslategray;
+    width: 150px;
+}
+
+#profileImage {
+    height: 100px;
+}
+
+#profileName {
+    font-size: 15px;
+    text-align: center;
+}
+
+#footer {
+    height: 20px;
+    background-color: black;
+    font-size: 10px;
+    color: lightgray;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 20px;
+    color: black;
+}
+
+.card-text {
+    font-size: 10px;
+    color: black;
+}
