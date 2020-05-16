@@ -7,6 +7,9 @@ var spotifyWebApi = require('spotify-web-api-node');
 
 const PORT = process.env.PORT
 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+app.use(express.static('public'));
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
 let accessToken = "";
@@ -102,6 +105,7 @@ app.get('/login', function(req, res, next) {
     res.render('login');
 })
 
+<<<<<<< HEAD
 app.get('/api/users', (req,res,next) => {
     db.Users.findAll({ raw: true })
         .then((results) => {
@@ -110,3 +114,36 @@ app.get('/api/users', (req,res,next) => {
             }
         });
 });
+=======
+app.post('/login', function(req, res, next) {
+    res.send('Login route');
+    // should have authentication
+    // redirects to profile
+});
+
+app.get('/registration', function(req, res, next) {
+    // renders registration
+    res.render('registration');
+});
+
+app.post('/registration', function(req, res, next) {
+    res.send('Registration post route');
+    // redirects to /
+    
+});
+
+app.get('/dashboard', function(req, res, next) {
+    res.send('Profile route');
+    // render profile
+});
+
+app.get('/display', function(req, res, next) {
+    res.send('display');
+});
+
+app.get('/logout', function(req, res, next) {
+    res.send('logout');
+    // redirects to /
+});
+
+>>>>>>> 60953bfebb3ee0662224ba98d476fcae485a4ddc
