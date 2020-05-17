@@ -1,0 +1,45 @@
+{
+  "name": "gym_tan_laundry",
+  "version": "1.0.0",
+  "description": "Application that suggests playlists based on 3 categories (gym,tan, or laundry) representing working-out, relaxing, working.",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "qs": "^6.9.4",
+    "sequelize": "^5.21.9",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server-main.js",
+    "dev": "nodemon server-main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitalcrafts-atl/Gym-Tan-Laundry.git"
+  },
+  "keywords": [
+    "spotify",
+    "api",
+    "song",
+    "playlists",
+    "app"
+  ],
+  "author": "Michael Stallings, Jada Quandt, Donald Langston, Crystal Lebron, Jose Isimeme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/digitalcrafts-atl/Gym-Tan-Laundry/issues"
+  },
+  "homepage": "https://github.com/digitalcrafts-atl/Gym-Tan-Laundry#readme"
+}

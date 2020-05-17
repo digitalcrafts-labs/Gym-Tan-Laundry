@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.ejs') %>
+<body>
+    <h1 class="mb-4">DISPLAY SONGS</h1>
+</body>
+</html>
+
+
+
+
+<% songs.map(song => { %>
+    <iframe src="https://open.spotify.com/embed/track/<%= song.id %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+<% })   %>
+
+
+
