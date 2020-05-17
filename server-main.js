@@ -4,6 +4,8 @@ const app = express();
 const axios = require('axios');
 const qs = require('qs');
 var spotifyWebApi = require('spotify-web-api-node');
+const bcrypt = require('bcrypt');
+const saltRounds = 6;
 
 const PORT = process.env.PORT
 
@@ -16,8 +18,105 @@ let accessToken = "";
 
 var spotifyApi = new spotifyWebApi();
 
+
+getAppAccessToken()
+    .then(()=> {app.listen(PORT, function(req, res, next) {
+        console.log('Server started on port:' + PORT);
+    })})
+
+// Initial test-route to check if we can get songs pulled from spotify down and rendered to page
+app.get('/pull-song', (req,res) => {
+    axios({
+        url: 'https://api.spotify.com/v1/tracks/?ids=11dFghVXANMlKmJXsNCbNl,20I6sIOMTCkB6w7ryavxtO,7xGfFoTpQ2E7fRF5lN10tr',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          //console.log(response.data.tracks)
+          res.render('display', {
+            pageTitle: 'GTL-Test-Song-Pull',  
+            songs: response.data.tracks
+        });
+      }).catch(function(error) {
+          console.error(error);
+      });
+})
+    
+app.get('/ping', (req,res,next) => {
+    res.send('PONG')
+});
+
+// New registration route with connection to users table in database
+app.get('/registration2', (req,res,next) => {
+    res.render('registration2', {
+        pageTitle: 'GTL-Registration'
+    })
+})
+
+// New registration post route which will bcrypt-hash the users password input, then create
+// that user in our users database table
+app.post('/registration2', (req,res,next) => {
+
+})
+
+
+app.get('/', function(req, res, next) {
+    // renders home
+    res.render('home');
+});
+
+app.get('/login', function(req, res, next) {
+    res.render('login');
+})
+
+app.post('/login', function(req, res, next) {
+    res.send('Login route');
+    // should have authentication
+    // redirects to profile
+});
+
+app.get('/registration', function(req, res, next) {
+    // renders registration
+    res.render('registration');
+});
+
+app.post('/registration', function(req, res, next) {
+    res.send('Registration post route');
+    // redirects to /
+    
+});
+
+app.get('/dashboard', function(req, res, next) {
+    res.send('Profile route');
+    // render profile
+});
+
+app.get('/display', function(req, res, next) {
+    res.send('display');
+});
+
+app.get('/logout', function(req, res, next) {
+    res.send('logout');
+    // redirects to /
+});
+
+
+
+
+/*=====================================================================================================================================*/
+// FUNCTIONS (temporary location)
+/*=====================================================================================================================================*/
+
+// Use axios request to get access token from spotify api to make requests for home 
+// and display page when user is not logged in
 function getAppAccessToken() {
-    // use axios request to get access token from spotify api to make requests for home and display page when user is not logged in
+    
 return axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
@@ -64,75 +163,3 @@ return axios({
     console.log(err);    
 });
 }
-getAppAccessToken()
-    .then(()=> {app.listen(PORT, function(req, res, next) {
-        console.log('Server started on port:' + PORT);
-    })})
-
-// Initial test-route to check if we can get songs pulled from spotify down and rendered to page
-app.get('/pull-song', (req,res) => {
-    axios({
-        url: 'https://api.spotify.com/v1/tracks/?ids=11dFghVXANMlKmJXsNCbNl,20I6sIOMTCkB6w7ryavxtO,7xGfFoTpQ2E7fRF5lN10tr',
-        method: 'get',
-        params: {
-          grant_type: 'client_credentials'
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-      }).then(function(response) {
-          console.log(response.data.tracks)
-          res.render('display', {songs: response.data.tracks});
-      }).catch(function(error) {
-          console.error(error);
-      });
-})
-    
-app.get('/ping', (req,res,next) => {
-    res.send('PONG')
-});
-// test route to work on display page
-
-
-app.get('/', function(req, res, next) {
-    // renders home
-    res.render('home');
-});
-
-app.get('/login', function(req, res, next) {
-    res.render('login');
-})
-
-app.post('/login', function(req, res, next) {
-    res.send('Login route');
-    // should have authentication
-    // redirects to profile
-});
-
-app.get('/registration', function(req, res, next) {
-    // renders registration
-    res.render('registration');
-});
-
-app.post('/registration', function(req, res, next) {
-    res.send('Registration post route');
-    // redirects to /
-    
-});
-
-app.get('/dashboard', function(req, res, next) {
-    res.send('Profile route');
-    // render profile
-});
-
-app.get('/display', function(req, res, next) {
-    res.send('display');
-});
-
-app.get('/logout', function(req, res, next) {
-    res.send('logout');
-    // redirects to /
-});
-
