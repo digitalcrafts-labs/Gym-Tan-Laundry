@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+// Bring in our database (db) connection and models
+const db = require('./models');
 const app = express();
 const axios = require('axios');
 const qs = require('qs');
@@ -11,7 +13,16 @@ const PORT = process.env.PORT
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// Setting up middleware
 app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded());
+
+/*
+// Insert router as middleware
+app.use(require('./routes'));
+*/
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
 let accessToken = "";
@@ -62,7 +73,20 @@ app.get('/registration2', (req,res,next) => {
 // New registration post route which will bcrypt-hash the users password input, then create
 // that user in our users database table
 app.post('/registration2', (req,res,next) => {
+    console.log('This is the req.body:' + req.body)
+    const username = req.body.username
+    const email = req.body.email
 
+    bcrypt.hash(req.body.password, saltRounds)
+        .then(hashedPass => {
+            db.Users.create({ username: username, email: email, password: hashedPass })
+                .then(newDbUser => {
+                    res.render('regSuccess', {
+                        pageTitle: 'Success!'
+                    })
+
+                })
+        })
 })
 
 
