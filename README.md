@@ -3,17 +3,27 @@
 
 <>------------------------------------<> CORE FUNCTIONALITY <>---------------------------------------------<>
 <br>
+<br>
+<br>
 -User selects whether they want to have have a Gym (active/upbeat/workout style) playlist, a 'Tan' (mellow/chill/relaxation style) playlist, or a 'Laundry' (focussed/persistent/work style) playlist created for them.
+<br>
 <br>
 -User then picks the length of playlist they'd like created: small, medium, or large which are 5, 10, and 20 songs respectively.
 <br>
+<br>
 -We use an algorithm that we've constructed to return songs based on the above category constraints of playlist
+<br>
 <br>
 -If the user likes the samples of songs played for them, they will have the option to register with us and connect their spotify account credentials to push that playlist and save it to their spotify account. 
 <br>
+<br>
+<br>
 <>-----------------------------------<> PLANNED FUNCTIONALITY <>-------------------------------------------<>
 <br>
+<br>
+<br>
 -We plan to also be able to save a copy of that playlist to our database in a future version.
+<br>
 <br>
 -We would like to add User dashboard customization including a short bio section, and comments on playlists they've saved
 
