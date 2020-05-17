@@ -1,12 +1,15 @@
 
 .center{
     margin: auto;
-    padding: 10px;
-    width: 70%;
+    padding: 100px;
+   /* width: 50%; */
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #Homepage {
-     height: 100vh;
+     height: 100px;
     background-image:url('/Images/headphones_long_wire.jpg');
     background-size: cover;
 }
@@ -14,11 +17,10 @@
 
 .button{
     display: flex;
-    padding:20px;
-    border: 0;
     flex-direction: row;
     justify-content: center;
-}
+    padding:0px;
+    }
 
 .button:hover{
     -webkit-transform: scale(1.3);
