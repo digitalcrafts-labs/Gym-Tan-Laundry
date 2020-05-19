@@ -21,7 +21,7 @@ submitPlaylistBtnT.addEventListener('click', function() {
     for(var i = 0; i < selectPlaylistSizeT.length; i++) {
         if(selectPlaylistSizeT[i].checked) {
             console.log(selectPlaylistSizeT[i].value);
-            window.location = '/views/display.ejs'
+            window.location = 'displayPage.html'
         }
     }
 })
@@ -34,7 +34,7 @@ submitPlaylistBtnL.addEventListener('click', function() {
     for(var i = 0; i < selectPlaylistSizeL.length; i++) {
         if(selectPlaylistSizeL[i].checked) {
             console.log(selectPlaylistSizeL[i].value);
-            window.location = '/views/display.ejs'
+            window.location = 'displayPage.html'
         }
     }
 })
