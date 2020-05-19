@@ -36,28 +36,9 @@ getAppAccessToken()
     })})
 
 // Initial test-route to check if we can get songs pulled from spotify down and rendered to page
-app.get('/pull-song', (req,res) => {
-    axios({
-        url: 'https://api.spotify.com/v1/tracks/?ids=11dFghVXANMlKmJXsNCbNl,20I6sIOMTCkB6w7ryavxtO,7xGfFoTpQ2E7fRF5lN10tr',
-        method: 'get',
-        params: {
-          grant_type: 'client_credentials'
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-      }).then(function(response) {
-          //console.log(response.data.tracks)
-          res.render('display', {
-            pageTitle: 'GTL-Test-Song-Pull',  
-            songs: response.data.tracks
-        });
-      }).catch(function(error) {
-          console.error(error);
-      });
-})
+// app.get('/pull-song', (req,res) => {
+    
+// })
     
 app.get('/ping', (req,res,next) => {
     res.send('PONG')
@@ -117,12 +98,42 @@ app.post('/registration', function(req, res, next) {
 });
 
 app.get('/dashboard', function(req, res, next) {
-    res.send('Profile route');
+    // var scope = 'user-read-private user-read-email playlist-modify-private';
+    // res.redirect('https://accounts.spotify.com/authorize?' +
+    // qs.stringify({
+    //   response_type: 'code',
+    //   client_id: process.env.CLIENT_ID,
+    //   scope: scope,
+    //   redirect_uri: process.env.REDIRECT_URI
+    // }));
+    res.render('dashboard', {
+    //Connected Dashboard ejs to page (JQ 5.19)
+    });
+    // res.send('Profile route');
     // render profile
 });
 
 app.get('/display', function(req, res, next) {
-    res.send('display');
+    axios({
+        url: 'https://api.spotify.com/v1/tracks/?ids=6BvtitRX5lQC87YlA6rq0n,2mtLGVN6xZm93wDG9nvviS,66flQ66BQfCl1yJsaPRNrN,6H0AwSQ20mo62jGlPGB8S6,2rmq49FcJ4U3wh1Z7C9UxE',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          //console.log(response.data.tracks)
+          res.render('display', {
+            pageTitle: "GTL-Test-Song-Pull",  
+            songs: response.data.tracks
+        });
+      }).catch(function(error) {
+          console.error(error);
+      });
 });
 
 app.get('/logout', function(req, res, next) {
@@ -157,31 +168,7 @@ return axios({
 })
 .then((result) => {
     accessToken = result.data.access_token;
-    // Jada 
-/*axios({
-    url: 'https://api.spotify.com/v1/tracks/6BvtitRX5lQC87YlA6rq0n?market=ES',
-    method: 'get',
-    params: {
-      grant_type: 'client_credentials'
-    },
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    },
-  }).then(function(response) {
-      console.log(response);
-  }).catch(function(error) {
-  });
-  *
-    /* spotifyApi.setAccessToken(accessToken);
-    spotifyApi.searchTracks('Love')
-    .then(function(data) {
-        console.log(data.body.tracks.items);
-    })
-    .catch(function(err) {
-        console.log(err);
-    }); */
+
 })
 .catch((err) => {
     console.log(err);    

@@ -8,7 +8,12 @@
 }
 
 #profileName {
-    font-size: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
+#spotifyUsername {
+    font-size: 12px;
     text-align: center;
 }
 
@@ -28,4 +33,34 @@
 .card-text {
     font-size: 10px;
     color: black;
+}
+
+#intro {
+    font-size: 20px;
+    text-align: center;
+    color: green;
+}
+
+html,body {
+    background-color: black;
+    font-family: 'Signika', sans-serif;
+}
+
+#refreshIcon {
+    height:25px;
+    margin-right: 10px;
+}
+
+#spotifyIcon {
+    height: 30px;
+}
+
+#songContainer {
+    justify-content: center;
+}
+
+#welcomeDashboard {
+    font-size: 20px;
+    text-align: center;
+    color: green;
 }

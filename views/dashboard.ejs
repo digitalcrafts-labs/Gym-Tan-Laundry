@@ -1,0 +1,61 @@
+<%- include('partials/header.ejs') %>
+
+<div id="dashboardContainer" class="d-flex flex-row">
+  <!-- Profile info on left -->
+<div id="profile" class="row d-flex justify-content-start col-lg-2 col-md-3 col-sm-3">
+    <div id="profileContainer">
+        <img src="images/placeholder.png" alt="User Profile Image" id="profileImage" class="mx-auto d-block my-3">
+        <h1 id="profileName">Jane Doe</h1>
+        <p id="spotifyUsername">janedoe77</p>
+    </div>
+</div>
+    <!-- Playlists -->
+    <div id="playlists" class="d-flex flex-column col-lg-10 col-md-9 col-sm-10 my-2 p-0">
+        <!-- We will  make the h2 below be dynamic to fill in the users name once we connect to the API-->
+        <h2 id="welcomeDashboard">Welcome to your dashboard, User</h2>
+        <div class="card mx-auto mt-2 w-75">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img src="https://via.placeholder.com/120" class="img-fluid" alt="">
+                </div>
+                <div id="gym" class="col">
+                    <div class="card-block px-2">
+                        <h4 class="card-title mt-2">Gym Playlist</h4>
+                        <p class="card-text">Here's where your gym playlist goes</p>
+                        <a href="#" class="btn btn-outline-success btn-sm">Button</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+        <div class="card my-2 mx-auto w-75">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img src="https://via.placeholder.com/120" class="img-fluid" alt="">
+                </div>
+                <div id="gym" class="col">
+                    <div class="card-block px-2">
+                        <h4 class="card-title mt-2">Tan Playlist</h4>
+                        <p class="card-text">Here's where your tan playlist goes</p>
+                        <a href="#" class="btn btn-outline-success btn-sm">Button</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-5 mx-auto w-75">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img src="https://via.placeholder.com/120" class="img-fluid" alt="">
+                </div>
+                <div id="gym" class="col">
+                    <div class="card-block px-2">
+                        <h4 class="card-title mt-2">Laundry Playlist</h4>
+                        <p class="card-text">Here's where your laundry playlist goes</p>
+                        <a href="#" class="btn btn-outline-success btn-sm">Button</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
