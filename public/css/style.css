@@ -1,23 +1,45 @@
+div.main {
+    overflow:hidden;
+    font-size: 1.5em;
+    font-family: "BemboStd";
+    color: #0e0d0d;
+  }
+  div.slide-right p {
+    -moz-animation: 10s slide-right;
+    -webkit-animation: 10s slide-right;
+    -o-animation: 10s slide-right;
+    animation: 10s slide-right;
+    margin:0;
+  }
+  div.slide-left p {
+    -moz-animation: 10s slide-left;
+    -webkit-animation: 10s slide-left;
+    -o-animation: 10s slide-left;
+    animation: 10s slide-left;
+    margin:10px;
+  }
 
 .center{
     margin: auto;
-    padding: 10px;
-    width: 70%;
+    padding: 50px;
+   /* width: 50%; */
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #Homepage {
-     height: 100vh;
+     height: 100px;
     background-image:url('/Images/headphones_long_wire.jpg');
     background-size: cover;
 }
 
 .button{
     display: flex;
-    padding:20px;
-    border: 0;
     flex-direction: row;
     justify-content: center;
-}
+    padding:0px;
+    }
 
 .button:hover{
     -webkit-transform: scale(1.3);
@@ -36,13 +58,36 @@
     background-color: rgba(0,0,0,0.5);
 }
 .modal-content{
-    background-color: seashell;
+    background-color: rgb(207, 194, 194);
     margin: 20% auto;
-    padding: 20px;
-    width: 70%;
+    width: 30%;
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
+    animation-name: modalopen;
+    animation-duration:2s;
+    text-align: center;
 
 }
+
+.modal-header{
+    background-color: rgb(24, 23, 23);
+    justify-content: center;
+    display: flex;
+    -webkit-box-align: start;
+    padding: 0;
+}
+  /* .modal-time1{
+    flex-direction: row;
+    padding:10px;
+   }
+   .modal-time2{
+    flex-direction: row;
+    padding:10px;
+   }
+   .modal-time3{
+    flex-direction: row;
+    padding:10px;    
+   } */
+
 .closeBtn{
     color: #ccc;
     float: right;
@@ -53,3 +98,24 @@
     text-decoration: none;
     cursor: pointer;
 }
+@keyframes modalopen{
+    from{opacity: 0}
+    to{opacity: 1}
+}
+@-webkit-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@-moz-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@-o-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+
+@-webkit-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@-moz-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@-o-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }

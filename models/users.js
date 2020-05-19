@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   });
   Users.associate = function(models) {
+    Users.hasMany(models.Playlists)
     // associations can be defined here
   };
   return Users;
