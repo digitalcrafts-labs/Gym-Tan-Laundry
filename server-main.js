@@ -157,6 +157,32 @@ app.get('/dashboard', function(req, res, next) {
     // render profile
 });
 
+// Creating a new test route to work with rec url params. This is currently 400'ing
+app.get('/search', function(req, res, next) {
+    axios({
+        url: 'https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20hip-hop&min_danceability=.4&max_danceability=.9&target_danceability=.3&target_energy=.5&min_popularity=50&target_popularity=70&min_tempo=120&max_tempo=140&target_tempo=125" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQADRGoxQHhkH8cvjaFZpXJUt0PNh_vXFm99LDcI6Q_7UcsXmiLUTeymQ8OTc3p_O6Ypg9gEtfuoQfJa8FcKJuf-O-ZTiwmjCNcUJB-JpzfC96K8tfHlzlG_rjBxTmtXaQkuXI1b6nfD',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          console.log(response.data.tracks)
+          res.render('search', {
+            pageTitle: "GTL-Test-Song-Pull",  
+            trackSearch: response.data.tracks
+        });
+      }).catch(function(error) {
+          console.error(error);
+      });
+});
+
+
+
 app.get('/display', function(req, res, next) {
     axios({
         url: 'https://api.spotify.com/v1/tracks/?ids=6BvtitRX5lQC87YlA6rq0n,2mtLGVN6xZm93wDG9nvviS,66flQ66BQfCl1yJsaPRNrN,6H0AwSQ20mo62jGlPGB8S6,2rmq49FcJ4U3wh1Z7C9UxE',

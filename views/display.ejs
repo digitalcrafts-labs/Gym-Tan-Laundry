@@ -14,6 +14,21 @@
   <button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
   </button>
+
+  
+  <script>
+    // Attempting to grab the tracks-id or playlist-id that's being injected into the iframe src above.
+    // afterwhich hopefully storing that value in a variable, then we can push that ID up to our own database
+  var songsFrame = document.getElementsByTagName('iframe');
+  // am able to get object syntax only so far
+  var tracksID = songsFrame.item(0);
+  document.getElementById('spotifyDashboard').addEventListener('click', function login_save() {
+
+      console.log('login/save button was clicked');
+      console.log('Here is what is in tag iFrame: ' + tracksID);
+      
+  });
+  </script>
 </div>
 
 <%- include('partials/footer.ejs') %>
