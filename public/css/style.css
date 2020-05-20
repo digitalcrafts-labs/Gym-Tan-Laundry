@@ -34,11 +34,13 @@ div.main {
     background-size: cover;
 }
 
+
 #modalBtnT, #modalBtnL, #modalBtn{
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding:0px;
+    border:  2px solid transparent;
     }
 
 #modalBtnT, #modalBtnL, #modalBtn:hover{
@@ -207,3 +209,4 @@ html,body {
     text-align: center;
     color: green;
 }
+

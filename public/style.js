@@ -3,7 +3,7 @@ var modalBtn = document.getElementById('modalBtn');
 var modalT = document.getElementById('simpleModalT');
 var modalBtnT = document.getElementById('modalBtnT');
 var modalL = document.getElementById('simpleModalL');
-var modalBtL = document.getElementById('modalBtnL');
+var modalBtnL = document.getElementById('modalBtnL');
 var closeBtn = document.getElementsByClassName('closeBtn')[0];
 
 modalBtn.addEventListener('click', openModal);
