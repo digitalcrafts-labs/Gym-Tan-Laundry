@@ -38,29 +38,6 @@ getAppAccessToken()
         console.log('Server started on port:' + PORT);
     })})
 
-// Initial test-route to check if we can get songs pulled from spotify down and rendered to page
-app.get('/pull-song', (req,res) => {
-    axios({
-        url: 'https://api.spotify.com/v1/tracks/?ids=11dFghVXANMlKmJXsNCbNl,20I6sIOMTCkB6w7ryavxtO,7xGfFoTpQ2E7fRF5lN10tr',
-        method: 'get',
-        params: {
-          grant_type: 'client_credentials'
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-      }).then(function(response) {
-          console.log(response.data.tracks)
-          res.render('display', {
-            pageTitle: 'GTL-Test-Song-Pull',  
-            songs: response.data.tracks
-        });
-      }).catch(function(error) {
-          console.error(error);
-      });
-})
 
 // This route uses our 'algorithm' which is just a choice of using spotify's recommendatinos endpoint ;) .. We provide the parameters, in this case just a few like danceability.
 // once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
