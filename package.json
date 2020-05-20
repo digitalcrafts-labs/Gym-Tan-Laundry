@@ -16,6 +16,7 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "qs": "^6.9.4",
+    "randomstring": "^1.1.5",
     "sequelize": "^5.21.9",
     "spotify-web-api-node": "^4.0.0"
   },
