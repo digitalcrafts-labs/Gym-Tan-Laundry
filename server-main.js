@@ -39,9 +39,62 @@ getAppAccessToken()
     })})
 
 // Initial test-route to check if we can get songs pulled from spotify down and rendered to page
-// app.get('/pull-song', (req,res) => {
-    
-// })
+app.get('/pull-song', (req,res) => {
+    axios({
+        url: 'https://api.spotify.com/v1/tracks/?ids=11dFghVXANMlKmJXsNCbNl,20I6sIOMTCkB6w7ryavxtO,7xGfFoTpQ2E7fRF5lN10tr',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          console.log(response.data.tracks)
+          res.render('display', {
+            pageTitle: 'GTL-Test-Song-Pull',  
+            songs: response.data.tracks
+        });
+      }).catch(function(error) {
+          console.error(error);
+      });
+})
+
+// This route uses our 'algorithm' which is just a choice of using spotify's recommendatinos endpoint ;) .. We provide the parameters, in this case just a few like danceability.
+// once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
+
+app.get('/search-tracks', (req,res) => {
+    axios({
+        url: 'https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20hip-hop&min_danceability=.4&max_danceability=.9&target_danceability=.3&min_energy=0.4&max_energy=.8&target_energy=.5&min_popularity=50&target_popularity=70&min_tempo=120&max_tempo=140&target_tempo=125',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          var searchBlock = response.data.tracks
+          var playTracks = searchBlock.map(track => {
+            return track.id
+          });
+          //console.log(searchBlock)
+          console.log(playTracks)
+          //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
+          res.render('display', {
+            pageTitle: 'GTL-Track-Search',  
+            songs: playTracks
+        });
+      }).catch(function(error) {
+          console.error(error.stack);
+      });
+})
+
+
     
 app.get('/ping', (req,res,next) => {
     res.send('PONG')

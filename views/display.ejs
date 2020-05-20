@@ -5,7 +5,7 @@
         <div id="songContainer" class="row py-1 px-3">
            <!-- Players rendered here -->
            <% songs.map(song => { %>
-            <iframe src="https://open.spotify.com/embed/track/<%= song.id %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            <iframe src="https://open.spotify.com/embed/track/<%= song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
           <% })   %> 
         </div>
 <div id="buttonDiv" class="mx-auto d-flex justify-content-center p-3">
