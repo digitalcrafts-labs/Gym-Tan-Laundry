@@ -2,9 +2,11 @@ require('dotenv').config();
 const express = require('express');
 // Bring in our database (db) connection and models
 const db = require('./models');
+require('dotenv').config();
 const app = express();
 const axios = require('axios');
 const qs = require('qs');
+const randomstring = require("randomstring");
 var spotifyWebApi = require('spotify-web-api-node');
 const bcrypt = require('bcrypt');
 const saltRounds = 6;
@@ -26,6 +28,7 @@ app.use(require('./routes'));
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
 let accessToken = "";
+let clientTokenObj = {};
 
 var spotifyApi = new spotifyWebApi();
 
@@ -76,8 +79,49 @@ app.get('/', function(req, res, next) {
     res.render('home');
 });
 
+app.get('/testaxios', function(req, res, next) {
+    let randomState = randomstring.generate();
+    res.redirect(`https://accounts.spotify.com/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback&scope=user-read-private%20user-read-email&state=${randomState}&show_dialog=true`);
+});
+
+app.get('/testrefresh', function(req, res, next) {
+    refreshToken();
+    res.send('testing refresh token');
+})
+
 app.get('/login', function(req, res, next) {
     res.render('login');
+})
+
+app.get('/login/callback', function(req, res, next) {
+    //req.query.code = code(if user accepts) req.query.error = error(if user does not accept or error occurs)
+    console.log('callback called');
+    if(!req.query.error) {
+        axios({
+            method: 'post',
+            url: 'https://accounts.spotify.com/api/token',
+            data: 
+                `grant_type=authorization_code&code=${req.query.code}&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback`,
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+            auth: {
+                username: process.env.CLIENT_ID,
+                password: process.env.CLIENT_SECRET
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+            clientTokenObj = response.data;
+            res.send('received access token');
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+    } else {
+        res.send('You clicked cancel or error occured');
+    }
+    
 })
 
 app.post('/login', function(req, res, next) {
@@ -173,4 +217,30 @@ return axios({
 .catch((err) => {
     console.log(err);    
 });
+}
+
+function clientAccessToken() {
+
+}
+
+function refreshToken() {
+    axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        data: 
+            `grant_type=refresh_token&refresh_token=${clientTokenObj.refresh_token}`,
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+        },
+        auth: {
+            username: process.env.CLIENT_ID,
+            password: process.env.CLIENT_SECRET
+        }
+    })
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((err) => {
+        console.error(err);
+    })
 }
