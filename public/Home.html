@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <link rel="stylesheet" href="/css/dashboard.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+  <link rel="stylesheet" href="/public/css/style.css">
+
 
   <title>Gym.Tan.Laundry.</title>
 </head>
@@ -23,15 +23,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/login.html">Login</a>
+          <a class="nav-link" href="/views/login.ejs">Login</a>
         </li>
       </ul>
     </div>
   </nav>
-
-  <div class="main slide-right center">
-    <p>Select a Music Category </p>
-  </div>
+  <br>
+  <br>
   <div class="center">
     <button id="modalBtn" class="button">
       <image src="images/G.png"></image>
@@ -51,12 +49,7 @@
           <label for="mediumList">Medium(10 songs)</label><br>
           <input type="radio" id="largeList" name="songList" value="large">
           <label for="largeList">Large(15 songs)</label><br>
-
           <button id="playlistSubmitButton">Submit</button>
-
-          <!-- <button class ="modal-time1">Small (5 songs)</button>
-          <button class ="modal-time2">Medium (10 songs)</button>
-          <button class ="modal-time3">Large (15 songs)</button> -->
         </div>
       </div>
     </div>
@@ -64,7 +57,9 @@
     <br>
     <button id="modalBtnT" class="button">
       <image src="images/t.png"></image>
+    
     </button>
+    
     <div id="simpleModalT" class="modal">
       <div class="modal-content">
         <div class="modal-header">
@@ -106,9 +101,11 @@
       </div>
     </div>
   </div>
-  <script src="/index.js"></script>
-  <script src="/style.js"></script>
-  <script src="/public/index.js"></script>
+  <div class="container center">
+   <p style="color: white;">(Place Holder) Gym, Tan, Laundry is a Music site. when you select a Category Gym, Tan or Laundry you will be sugested a playlist.
+     Gym for active Move music, Tan for having fun "Beach" music and Laundy for music that will help you concentrate like at work or doing Laundry</p>
+</div>
+  <script src="style.js"></script>
+  <script src="index.js"></script>
 </body>
-
 </html>
