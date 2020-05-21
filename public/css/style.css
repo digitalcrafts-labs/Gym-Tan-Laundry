@@ -163,6 +163,7 @@ body {
 }
 
 #footer {
+    margin-top: 20px;
     height: 20px;
     background-color: black;
     font-size: 10px;
@@ -187,8 +188,8 @@ body {
 }
 
 html,body {
-    background-color: black;
     font-family: 'Signika', sans-serif;
+    background-image: url('images/headphones_long_wire');
 }
 
 #refreshIcon {
@@ -204,9 +205,14 @@ html,body {
     justify-content: center;
 }
 
-#welcomeDashboard {
+#welcomeDashboard, #registrationHeader {
+    margin-top: 10px;
     font-size: 20px;
     text-align: center;
     color: green;
 }
 
+.registerLabels {
+    font-size: 15px;
+    color: green;
+}
