@@ -1,23 +1,3 @@
-div.main {
-    overflow:hidden;
-    font-size: 1.5em;
-    font-family: "BemboStd";
-    color: #0e0d0d;
-  }
-  div.slide-right p {
-    -moz-animation: 10s slide-right;
-    -webkit-animation: 10s slide-right;
-    -o-animation: 10s slide-right;
-    animation: 10s slide-right;
-    margin:0;
-  }
-  div.slide-left p {
-    -moz-animation: 10s slide-left;
-    -webkit-animation: 10s slide-left;
-    -o-animation: 10s slide-left;
-    animation: 10s slide-left;
-    margin:10px;
-  }
 
 .center{
     margin: auto;
@@ -29,13 +9,27 @@ div.main {
 }
 
 #Homepage {
-     height: 100px;
-    background-image:url('/Images/headphones_long_wire.jpg');
-    background-size: cover;
+ background-size: cover;
+    background-image:url('/public/images/headphones.jpg');
+   height: 100%;
+width:  100%;
+font-family: 'Signika', sans-serif;
+}
+.button{
+    display: flex;
+    padding:0;
+    border: 0;
+    flex-direction: row;
+    justify-content: center;
+    background-color: transparent;
 }
 
+.button:hover{
+    -webkit-transform: scale(1.3);
+        transform: scale(1.3);
+}
 
-#modalBtnT, #modalBtnL, #modalBtn{
+/* #modalBtnT, #modalBtnL, #modalBtn{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -45,9 +39,13 @@ div.main {
 
 #modalBtnT, #modalBtnL, #modalBtn:hover{
     -webkit-transform: scale(1.3);
-        transform: scale(1.3);
-}
+        transform: scale(1.3); */
 
+.closeBtn{
+    float: right;
+    font-size: 30px;
+    justify-content: right;
+}
 .modal{
     display: none;
     position: fixed;
@@ -57,10 +55,10 @@ div.main {
     height: 100%;
     width: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+    /* background-color: rgba(250, 244, 244, 0.5); */
 }
 .modal-content{
-    background-color: rgb(207, 194, 194);
+    background-color: rgb(107, 109, 108);
     margin: 20% auto;
     width: 30%;
     box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
@@ -71,62 +69,24 @@ div.main {
 }
 
 .modal-header{
-    background-color: rgb(24, 23, 23);
+    background-color: rgb(126, 129, 129);
     justify-content: center;
-    display: flex;
-    -webkit-box-align: start;
+    /* display: flex; */
+    /* -webkit-box-align: start; */
     padding: 0;
 }
-  /* .modal-time1{
-    flex-direction: row;
-    padding:10px;
-   }
-   .modal-time2{
-    flex-direction: row;
-    padding:10px;
-   }
-   .modal-time3{
-    flex-direction: row;
-    padding:10px;    
-   } */
 
-.closeBtn{
-    color: #ccc;
-    float: right;
-    font-size: 30px;
-}
 .closeBtn:hover, .closeBtn:focus{
-    color: #000000;
+    color: #696969;
     text-decoration: none;
     cursor: pointer;
 }
-@keyframes modalopen{
-    from{opacity: 0}
-    to{opacity: 1}
-}
-@-webkit-keyframes slide-right { from { margin-left: 100%;width: 300%; }
-to {margin-left: 0%;width: 100%;} }
-@-moz-keyframes slide-right { from { margin-left: 100%;width: 300%; }
-to {margin-left: 0%;width: 100%;} }
-@-o-keyframes slide-right { from { margin-left: 100%;width: 300%; }
-to {margin-left: 0%;width: 100%;} }
-@keyframes slide-right { from { margin-left: 100%;width: 300%; }
-to {margin-left: 0%;width: 100%;} }
 
-@-webkit-keyframes slide-left { from {margin-left: 0%;width: 100%;}
-to {margin-left: -100%;width: 300%;} }
-@-moz-keyframes slide-left { from {margin-left: 0%;width: 100%;}
-to {margin-left: -100%;width: 300%;} }
-@-o-keyframes slide-left { from {margin-left: 0%;width: 100%;}
-to {margin-left: -100%;width: 300%;} }
-@keyframes slide-left { from {margin-left: 0%;width: 100%;}
-to {margin-left: -100%;width: 300%;} }
-
-body {
+/* body {
     height: 100vh;
     background-image: url('images/headphones_long_wire.jpg');
     background-size: cover;
-}
+} */
 
 .simple-login-container{
     width:300px;
@@ -187,10 +147,12 @@ body {
     color: green;
 }
 
+
 html,body {
     font-family: 'Signika', sans-serif;
     background-image: url('images/headphones_long_wire');
 }
+
 
 #refreshIcon {
     height:25px;
@@ -211,6 +173,30 @@ html,body {
     text-align: center;
     color: green;
 }
+
+
+
+@keyframes modalopen{
+    from{opacity: 0}
+    to{opacity: 1}
+}
+@-webkit-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@-moz-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@-o-keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+@keyframes slide-right { from { margin-left: 100%;width: 300%; }
+to {margin-left: 0%;width: 100%;} }
+
+@-webkit-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@-moz-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@-o-keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
+@keyframes slide-left { from {margin-left: 0%;width: 100%;}
+to {margin-left: -100%;width: 300%;} }
 
 .registerLabels {
     font-size: 15px;
