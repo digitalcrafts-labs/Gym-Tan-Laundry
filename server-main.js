@@ -91,7 +91,7 @@ app.get('/search-tracks', (req,res) => {
         method: 'get',
         params: {
           grant_type: 'client_credentials'
-        },
+        }, 
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -112,6 +112,24 @@ app.get('/search-tracks', (req,res) => {
       }).catch(function(error) {
           console.error(error.stack);
       });
+});
+
+// attempting to make a post route to create the playlist of the reccomended songs on behalf of the user
+app.get('/search-tracks-submit', (req,res,next) => {
+    axios.post(`https://api.spotify.com/v1/users/${user}/playlists`, {
+        "name": "TEST! Playlist",
+        "public": "true"
+    }, {
+        headers: {
+            "Authorization": "Bearer BQDBrQTZ_K-2mltV_yBnibsnn8gvgSeMZn-9_LMXVN0U5Y-avZojazFMz2JkOuqu3tLSWEdEdcB4h2H6rT-S68ILdVCiRlHBDfumvcTE1yenwOiLdaaC7dcmr2kh7UYzdj_hc6pX1KPHQdwFUBa32sw5b5pUvzgUOD1VmcT7mMukr3VPWlVmpJL-owhZ",
+            "Content-Type": "application/json"
+        }
+    }
+    ).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(`OOPS! ${error}`)
+    })
 });
 
 app.get(
