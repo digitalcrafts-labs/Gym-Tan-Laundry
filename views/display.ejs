@@ -11,13 +11,15 @@
 <div id="buttonDiv" class="mx-auto d-flex justify-content-center p-3">
   <button id="startOver" class="btn btn-warning mr-2">
     <img src="./Images/refresh.png" alt="" id="refreshIcon">Start over </button>
-  <button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
+  <a href="/auth/spotify"><button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
-  </button>
+  </button></a>
 
   
   <script>
-    // Attempting to grab the tracks-id or playlist-id that's being injected into the iframe src above.
+    // grabbed songs array
+   var songsList = "<%= songs %>"
+   // Attempting to grab the tracks-id or playlist-id that's being injected into the iframe src above.
     // afterwhich hopefully storing that value in a variable, then we can push that ID up to our own database
   var songsFrame = document.getElementsByTagName('iframe');
   // am able to get object syntax only so far
@@ -25,7 +27,7 @@
   document.getElementById('spotifyDashboard').addEventListener('click', function login_save() {
 
       console.log('login/save button was clicked');
-      console.log('Here is what is in tag iFrame: ' + tracksID);
+      console.log(songsList);
       
   });
   </script>
