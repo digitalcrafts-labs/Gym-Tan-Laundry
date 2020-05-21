@@ -1,9 +1,13 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 // Bring in our database (db) connection and models
 const db = require('./models');
 require('dotenv').config();
 const app = express();
+const passport = require('passport');
+const session = require('express-session');
+const SpotifyStrategy = require('passport-spotify').Strategy;
+const flash = require('connect-flash');
 const axios = require('axios');
 const qs = require('qs');
 const randomstring = require("randomstring");
@@ -13,6 +17,28 @@ const saltRounds = 6;
 
 const PORT = process.env.PORT
 
+passport.use(
+    new SpotifyStrategy(
+      {
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: `http://localhost:${PORT}/spotify/callback`
+      },
+      function(accessToken, refreshToken, expires_in, profile, done) {
+          // user access tokens, not app's
+          console.log({accessToken, refreshToken})
+          db.Users.findOrCreate({where: {email: profile._json.email, username: profile.username}}).then(user =>{
+                done(null,user[0])
+          
+        }).catch(e => done(e))
+      }
+    )
+  );
+
+app.use(session({secret: process.env.APP_SECRET}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -21,6 +47,23 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded());
 
+//When the auth is successful the id is attached to the session
+passport.serializeUser(function(user, done){
+    done(null, user.id)
+})
+//Any subsequent requests after the user has been authenticated.
+//We will use the userId attached to the session and query the db for the user.
+//This means in our routes we don't need to query for the user.
+//DeserializeUser will query the Db for us and attach it req.user
+passport.deserializeUser(function(id,done){
+    db.Users.findByPk(id).then(user =>{
+        if(user){
+            done(null,user)
+        }
+    }).catch(e =>{
+        done(e)
+    })
+})
 /*
 // Insert router as middleware
 app.use(require('./routes'));
@@ -38,10 +81,52 @@ getAppAccessToken()
         console.log('Server started on port:' + PORT);
     })})
 
-// Initial test-route to check if we can get songs pulled from spotify down and rendered to page
-// app.get('/pull-song', (req,res) => {
-    
-// })
+
+// This route uses our 'algorithm' which is just a choice of using spotify's recommendatinos endpoint ;) .. We provide the parameters, in this case just a few like danceability.
+// once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
+
+app.get('/search-tracks', (req,res) => {
+    axios({
+        url: 'https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20hip-hop&min_danceability=.4&max_danceability=.9&target_danceability=.3&min_energy=0.4&max_energy=.8&target_energy=.5&min_popularity=50&target_popularity=70&min_tempo=120&max_tempo=140&target_tempo=125',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          var searchBlock = response.data.tracks
+          var playTracks = searchBlock.map(track => {
+            return track.id
+          });
+          //console.log(searchBlock)
+          //console.log(playTracks)
+          //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
+          res.render('display', {
+            pageTitle: 'GTL-Track-Search',  
+            songs: playTracks
+        });
+      }).catch(function(error) {
+          console.error(error.stack);
+      });
+});
+
+app.get(
+    '/auth/spotify',
+    passport.authenticate('spotify', {
+      scope: ['user-read-email', 'user-read-private', 'playlist-modify-public']
+    })
+  );
+
+  app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
+      //Successful auth
+      console.log({"the_user": req.user, "the_session": req.session})
+    console.log('Authenticated!')
+      res.redirect('/search-tracks')
+  })
     
 app.get('/ping', (req,res,next) => {
     res.send('PONG')
@@ -156,6 +241,32 @@ app.get('/dashboard', function(req, res, next) {
     // res.send('Profile route');
     // render profile
 });
+
+// Creating a new test route to work with rec url params. This is currently 400'ing
+app.get('/search', function(req, res, next) {
+    axios({
+        url: 'https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20hip-hop&min_danceability=.4&max_danceability=.9&target_danceability=.3&target_energy=.5&min_popularity=50&target_popularity=70&min_tempo=120&max_tempo=140&target_tempo=125" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQADRGoxQHhkH8cvjaFZpXJUt0PNh_vXFm99LDcI6Q_7UcsXmiLUTeymQ8OTc3p_O6Ypg9gEtfuoQfJa8FcKJuf-O-ZTiwmjCNcUJB-JpzfC96K8tfHlzlG_rjBxTmtXaQkuXI1b6nfD',
+        method: 'get',
+        params: {
+          grant_type: 'client_credentials'
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      }).then(function(response) {
+          console.log(response.data.tracks)
+          res.render('search', {
+            pageTitle: "GTL-Test-Song-Pull",  
+            trackSearch: response.data.tracks
+        });
+      }).catch(function(error) {
+          console.error(error);
+      });
+});
+
+
 
 app.get('/display', function(req, res, next) {
     axios({

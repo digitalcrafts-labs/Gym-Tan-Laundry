@@ -123,6 +123,7 @@ font-family: 'Signika', sans-serif;
 }
 
 #footer {
+    margin-top: 20px;
     height: 20px;
     background-color: black;
     font-size: 10px;
@@ -146,10 +147,12 @@ font-family: 'Signika', sans-serif;
     color: green;
 }
 
-/* html,body {
-    /* background-color: black; */
-   /*
-} */
+
+html,body {
+    font-family: 'Signika', sans-serif;
+    background-image: url('images/headphones_long_wire');
+}
+
 
 #refreshIcon {
     height:25px;
@@ -164,7 +167,8 @@ font-family: 'Signika', sans-serif;
     justify-content: center;
 }
 
-#welcomeDashboard {
+#welcomeDashboard, #registrationHeader {
+    margin-top: 10px;
     font-size: 20px;
     text-align: center;
     color: green;
@@ -193,3 +197,8 @@ to {margin-left: -100%;width: 300%;} }
 to {margin-left: -100%;width: 300%;} }
 @keyframes slide-left { from {margin-left: 0%;width: 100%;}
 to {margin-left: -100%;width: 300%;} }
+
+.registerLabels {
+    font-size: 15px;
+    color: green;
+}
