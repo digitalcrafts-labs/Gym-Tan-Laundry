@@ -42,14 +42,16 @@
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
-
-          <input type="radio" id="smallList" name="songList" value="small">
+        <form method="POST" action="/modal-input">
+          <input type="radio" id="smallList" name="songList" value="5">
+          <input type="hidden" name="playListType" value="gym">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumList" name="songList" value="medium">
+          <input type="radio" id="mediumList" name="songList" value="10">
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeList" name="songList" value="large">
+          <input type="radio" id="largeList" name="songList" value="15">
           <label for="largeList">Large(15 songs)</label><br>
-          <button id="playlistSubmitButton">Submit</button>
+          <button type="submit" id="playlistSubmitButton">Submit</button>
+        </form>
         </div>
       </div>
     </div>
@@ -67,14 +69,16 @@
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
-          <input type="radio" id="smallListT" name="songListT" value="small">
+          <form method="POST" action="/modal-input">
+          <input type="radio" id="smallListT" name="songListT" value="5">
+          <input type="hidden" name="playListType" value="tan">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListT" name="songListT" value="medium">
+          <input type="radio" id="mediumListT" name="songListT" value="10">
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListT" name="songListT" value="large">
+          <input type="radio" id="largeListT" name="songListT" value="15">
           <label for="largeList">Large(15 songs)</label><br>
-
-          <button id="playlistSubmitButtonT">Submit</button>
+        </form>
+          <button type="submit" id="playlistSubmitButtonT">Submit</button>
 
         </div>
       </div>
@@ -89,14 +93,16 @@
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
-          <input type="radio" id="smallListL" name="songListL" value="small">
+        <form method="POST" action="/modal-input"></form>
+          <input type="radio" id="smallListL" name="songListL" value="5">
+          <input type="hidden" name="playListType" value="laundry">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListL" name="songListL" value="medium">
+          <input type="radio" id="mediumListL" name="songListL" value="10">
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListL" name="songListL" value="large">
+          <input type="radio" id="largeListL" name="songListL" value="15">
           <label for="largeList">Large(15 songs)</label><br>
-
-          <button id="playlistSubmitButtonL">Submit</button>
+        </form>
+          <button type="submit" id="playlistSubmitButtonL">Submit</button>
         </div>
       </div>
     </div>
