@@ -14,6 +14,8 @@ const randomstring = require("randomstring");
 var spotifyWebApi = require('spotify-web-api-node');
 const bcrypt = require('bcrypt');
 const saltRounds = 6;
+
+// variable that will hold the results of our song-picking algorithm (functions below) to then be passed to the 'search-tracks' route for querying spotify 
 var url = '';
 
 const PORT = process.env.PORT
@@ -143,7 +145,6 @@ app.get('/registration2', (req,res,next) => {
 // New registration post route which will bcrypt-hash the users password input, then create
 // that user in our users database table
 app.post('/registration2', (req,res,next) => {
-    console.log('This is the req.body:' + req.body)
     const username = req.body.username
     const email = req.body.email
 
@@ -160,9 +161,11 @@ app.post('/registration2', (req,res,next) => {
 })
 
 app.post('/modal-input', (req,res,next) => {
+    // below are two variables that are receiving and storing the type of playlist selected (G,T,or L), and then the 
+    // 'songList' length of playlist (5,10 or 15 songs).
     var playListType = req.body.playListType;
     var songList = req.body.songList;
-
+    // logic that matches received inputs from front-end form, matches it with one of our 3 algorithm functions, then passes the length of playlist as parameter(songList)
     if(playListType === "gym") {
         url = getRandomGymRecommendation(songList);
     } else if (playListType === "tan") {
@@ -170,6 +173,7 @@ app.post('/modal-input', (req,res,next) => {
     } else {
         url = getRandomLaundryRecommendation(songList);
     }
+    // awesomely so: the way express operates allows us to simply redirect to the search-tracks route which uses that newly assigned url variable to query spotify for the songs
     res.redirect('/search-tracks');
     console.log('On modal-input route req.bodies: ' + playListType + '' + songList)
     console.log('URL:' + url)
@@ -177,7 +181,7 @@ app.post('/modal-input', (req,res,next) => {
 
 app.get('/', function(req, res, next) {
     // renders home
-    res.render('home');
+    res.redirect('/Home.html');
 });
 
 app.get('/testaxios', function(req, res, next) {
@@ -320,7 +324,8 @@ app.get('/logout', function(req, res, next) {
 /*=====================================================================================================================================*/
 
 // Use axios request to get access token from spotify api to make requests for home 
-// and display page when user is not logged in
+// and display page when user is not logged in. This is the 'public' access token
+
 function getAppAccessToken() {
     
 return axios({
@@ -383,6 +388,8 @@ function getRandomGymRecommendation (length){
    return gymUrl;
 };
 
+// Tan reccomend function
+
 function getRandomTanRecommendation (length){
     const tanGenres = ["chill", "idm", "indie-pop", "groove", "hip-hop", "indie-pop", "r-n-b", "road-trip", "summer"];
     let tanGenre = tanGenres[Math.floor(Math.random() * tanGenres.length)];
@@ -391,8 +398,10 @@ function getRandomTanRecommendation (length){
     let tanUrl = `https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20${tanGenre}&target_danceability=${tanDanceability}&min_energy=0.4&target_popularity=${tanPopularity}&min_tempo=100&max_tempo=130&min_valence=.2`;
     return tanUrl;
   };
-  
-  function getRandomLaundryRecommendation (length){
+
+// Laundry reccomend function  
+
+function getRandomLaundryRecommendation (length){
     const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study" ];
     let laundryGenre = laundryGenres[Math.floor(Math.random() * laundryGenres.length)];
     let laundryDanceability = (Math.random() * (0.1 - .5) + .5).toFixed(1);

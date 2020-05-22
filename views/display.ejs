@@ -1,7 +1,7 @@
 <%- include('partials/header.ejs') %>
 
 <!-- Flexbox page container -->
-<h1 id="intro">Here is a preview of your short gym playlist</h1>
+<h1 id="intro"><%=pageTitle%></h1>
         <div id="songContainer" class="row py-1 px-3">
            <!-- Players rendered here -->
            <% songs.map(song => { %>
