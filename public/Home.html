@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="htmlTag" lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Font package below -->
+   <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;600;700&display=swap" rel="stylesheet">
+   <!-- Bootstrap below -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <link rel="stylesheet" href="/public/css/dashboard.css">
-  <link rel="stylesheet" href="/public/css/style.css">
-
-
+  <!-- Stylesheet below -->
+  <!-- <link rel="stylesheet" href="/public/css/dashboard.css"> -->
+  <link rel="stylesheet" href="/css/style.css">
   <title>Gym.Tan.Laundry.</title>
 </head>
 
@@ -108,10 +110,15 @@
     </div>
   </div>
   <div class="container center">
-   <p style="color: white;">(Place Holder) Gym, Tan, Laundry is a Music site. when you select a Category Gym, Tan or Laundry you will be sugested a playlist.
-     Gym for active Move music, Tan for having fun "Beach" music and Laundy for music that will help you concentrate like at work or doing Laundry</p>
+   <p id="homeIntroduction">(Placeholder) Welcome! We're here to help make playlist creation easier. When you select a one of our categories above (Gym, Tan or Laundry) we will generate a unique playlist for you! 
+    </p>
 </div>
-  <script src="style.js"></script>
-  <script src="index.js"></script>
+<!-- Bootstrap JS below -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- Script for Crystal's Modals -->
+  <script src="/routes/index.js"></script>
+  <script src="/routes/style.js"></script>
 </body>
 </html>

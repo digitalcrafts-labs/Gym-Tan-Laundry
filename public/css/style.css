@@ -9,12 +9,19 @@
 }
 
 #Homepage {
- background-size: cover;
-    background-image:url('/public/images/headphones.jpg');
-   height: 100%;
-width:  100%;
-font-family: 'Signika', sans-serif;
+    background-color: black;
+    background-size: cover;
+    background-image:url('/images/headphones.jpg');
+    height: 100%;
+    width:  100%;
+    font-family: 'Signika', sans-serif;
 }
+
+#homeIntroduction {
+    color:white;
+    font-size: 20px;
+}
+
 .button{
     display: flex;
     padding:0;
@@ -129,6 +136,9 @@ font-family: 'Signika', sans-serif;
     font-size: 10px;
     color: lightgray;
     text-align: center;
+    position:sticky;
+    bottom:0;
+    width:100%;
 }
 
 .card-title {
@@ -146,13 +156,6 @@ font-family: 'Signika', sans-serif;
     text-align: center;
     color: green;
 }
-
-
-html,body {
-    font-family: 'Signika', sans-serif;
-    background-image: url('images/headphones_long_wire');
-}
-
 
 #refreshIcon {
     height:25px;
