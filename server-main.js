@@ -44,7 +44,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 // Setting up middleware
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -115,8 +115,7 @@ app.get('/search-tracks', (req,res) => {
       });
 });
 
-app.get(
-    '/auth/spotify',
+app.get('/auth/spotify',
     passport.authenticate('spotify', {
       scope: ['user-read-email', 'user-read-private', 'playlist-modify-public']
     })
@@ -171,8 +170,8 @@ app.post('/modal-input', (req,res,next) => {
         url = getRandomLaundryRecommendation(songList);
     }
     res.redirect('/search-tracks');
-    console.log('On modal-input route req.bodies: ' + playListType + '' + songList)
-    console.log('URL:' + url)
+    // console.log('On modal-input route req.bodies: ' + playListType + '' + songList)
+    // console.log('URL:' + url)
 });
 
 app.get('/', function(req, res, next) {
@@ -243,16 +242,7 @@ app.post('/registration', function(req, res, next) {
 });
 
 app.get('/dashboard', function(req, res, next) {
-    // var scope = 'user-read-private user-read-email playlist-modify-private';
-    // res.redirect('https://accounts.spotify.com/authorize?' +
-    // qs.stringify({
-    //   response_type: 'code',
-    //   client_id: process.env.CLIENT_ID,
-    //   scope: scope,
-    //   redirect_uri: process.env.REDIRECT_URI
-    // }));
     res.render('dashboard', {
-    //Connected Dashboard ejs to page (JQ 5.19)
     });
     // res.send('Profile route');
     // render profile
@@ -372,7 +362,7 @@ function refreshToken() {
     })
 }
 
-// Gym reccomend function 
+// Gym reccomend functions
 
 function getRandomGymRecommendation (length){
     const gymGenres = ["club", "dance", "happy", "hip-hop", "party", "drum-and-bass", "edm", "pop", "power-pop", "work-out"];
@@ -387,16 +377,16 @@ function getRandomTanRecommendation (length){
     const tanGenres = ["chill", "idm", "indie-pop", "groove", "hip-hop", "indie-pop", "r-n-b", "road-trip", "summer"];
     let tanGenre = tanGenres[Math.floor(Math.random() * tanGenres.length)];
     let tanDanceability = (Math.random() * (0.2 - .7) + .7).toFixed(1);
-    let tanPopularity = (Math.random() * (60 - 100) + 100).toFixed(0);
-    let tanUrl = `https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20${tanGenre}&target_danceability=${tanDanceability}&min_energy=0.4&target_popularity=${tanPopularity}&min_tempo=100&max_tempo=130&min_valence=.2`;
+    let tanPopularity = (Math.random() * (50 - 100) + 100).toFixed(0);
+    let tanUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=pop%2C%20${tanGenre}&target_danceability=${tanDanceability}&min_energy=0.4&target_popularity=${tanPopularity}&min_tempo=100&max_tempo=130&min_valence=.2`;
     return tanUrl;
   };
   
   function getRandomLaundryRecommendation (length){
-    const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study" ];
+    const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study"];
     let laundryGenre = laundryGenres[Math.floor(Math.random() * laundryGenres.length)];
     let laundryDanceability = (Math.random() * (0.1 - .5) + .5).toFixed(1);
-    let laundryPopularity = (Math.random() * (60 - 100) + 100).toFixed(0);
-    let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=10&market=US&seed_genres=pop%2C%20${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
+    let laundryPopularity = (Math.random() * (50 - 100) + 100).toFixed(0);
+    let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=pop%2C%20${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
     return laundryUrl
   };
