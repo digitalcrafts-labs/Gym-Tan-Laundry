@@ -1,0 +1,8 @@
+function getRandomGymRecommendation (length){
+    let gymGenre = gymGenres[Math.floor(Math.random() * gymGenres.length)];
+    let gymDanceability = (Math.random() * (0.3 - .9) + .9).toFixed(1);
+    let gymPopularity = (Math.random() * (50 - 100) + 100).toFixed(0);
+    let gymUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=pop%2C%20${gymGenre}&target_danceability=${gymDanceability}&min_energy=0.4&target_popularity=${gymPopularity}&min_tempo=120&max_tempo=140&min_valence=.5`;
+   return gymUrl;
+}
+getRandomGymRecommendation(5)
