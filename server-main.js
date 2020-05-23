@@ -177,6 +177,13 @@ app.post('/modal-input', (req,res,next) => {
     console.log('URL:' + url)
 });
 
+// Making another test route to test creating a playlist on behalf of user, once they've logged-in and authenticated. This will be initially
+// hardcoded with my (michael) user data
+app.get('/push-to-playlist', (req,res) => {
+    
+
+})
+
 app.get('/', function(req, res, next) {
     // renders home
     res.redirect('/Home.html');
