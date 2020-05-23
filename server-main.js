@@ -183,25 +183,8 @@ app.post('/modal-input', (req,res,next) => {
 
 // Making another test route to test creating a playlist on behalf of user, once they've logged-in and authenticated. This will be initially
 // hardcoded with my (michael) user data
-// Got this code below working, posted a new empty playlist to my account. Right now though everything is hard-coded (user) (token)
-
-app.post('/makeplaylist', (req,res) => {
-    console.log(req.body)
-    res.json('Success')
-    axios.post(`https://api.spotify.com/v1/users/${req.user.username}/playlists`, {
-        "name": "TEST! NUM 2 Playlist",
-        "public": "true"
-    }, {
-        headers: {
-            "Authorization": `Bearer ${req.user.accessToken}`,
-            "Content-Type": "application/json"
-        }
-    }
-    ).then(response => {
-        console.log(response)
-    }).catch(error => {
-        console.log(`OOPS! ${error}`)
-    })
+app.get('/push-to-playlist', (req,res) => {
+    
 
 })
 
