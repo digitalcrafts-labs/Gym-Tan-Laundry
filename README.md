@@ -1,10 +1,6 @@
 # Gym-Tan-Laundry 
 # A spotfiy-api-playlist-creating-wonderapp
 
-<>------------------------------------<> CORE FUNCTIONALITY <>---------------------------------------------<>
-<br>
-<br>
-<br>
 -User selects whether they want to have have a Gym (active/upbeat/workout style) playlist, a 'Tan' (mellow/chill/relaxation style) playlist, or a 'Laundry' (focussed/persistent/work style) playlist created for them.
 <br>
 <br>
@@ -15,17 +11,33 @@
 <br>
 <br>
 -If the user likes the samples of songs played for them, they will have the option to register with us and connect their spotify account credentials to push that playlist and save it to their spotify account. 
-<br>
-<br>
-<br>
-<>-----------------------------------<> PLANNED FUNCTIONALITY <>-------------------------------------------<>
-<br>
-<br>
-<br>
--We plan to also be able to save a copy of that playlist to our database in a future version.
-<br>
-<br>
--We would like to add User dashboard customization including a short bio section, and comments on playlists they've saved
 
+## Built With
+
+* [Express](https://expressjs.com/)
+* [Axios](https://github.com/axios/axios)
+* [Passport JS](http://www.passportjs.org/)
+* [Bootstrap](https://getbootstrap.com/)
+
+## Authors
+
+* **Crystal Lebron** - *Team Member* - [cryslebron](https://github.com/cryslebron)
+
+* **Donald Langston** - *Team Member* - [donald-langston](https://github.com/donald-langston)
+
+* **Jada Quandt** - *Team Member* - [jadaquandt](https://github.com/jadaquandt)
+
+* **Jose Isimeme** - *Team Member* - [Jose-Isimeme](https://github.com/Jose-Isimeme)
+
+* **Michael Stallings** - *Team Leader* - [stall84](https://github.com/stall84)
+
+
+## Acknowledgments
+
+* Spotify Developer Forums
+* StackOverflow
+* Alexander Santos
+* James Hernandez
+* [DigitalCrafts](https://www.digitalcrafts.com/)
 
 
