@@ -3,6 +3,8 @@ require('dotenv').config();
 module.exports = 
 {
   development: {
+    /* username: "postgres",
+    password: "postgres", */
     use_env_variable: "LOCAL_DB",
     dialect: "postgres",
     operatorsAliases: false

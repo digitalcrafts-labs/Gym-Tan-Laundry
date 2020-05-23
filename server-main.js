@@ -69,6 +69,7 @@ passport.deserializeUser(function(id,done){
 // Insert router as middleware
 app.use(require('./routes'));
 */
+app.use(isLoggedIn);
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
 let accessToken = "";
@@ -80,6 +81,7 @@ var spotifyApi = new spotifyWebApi();
 getAppAccessToken()
     .then(()=> {app.listen(PORT, function(req, res, next) {
         console.log('Server started on port:' + PORT);
+        setInterval(getAppAccessToken, 3500000);
     })})
 
 
@@ -108,7 +110,8 @@ app.get('/search-tracks', (req,res) => {
           //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
           res.render('display', {
             pageTitle: 'GTL-Track-Search',  
-            songs: playTracks
+            songs: playTracks,
+            loggedIn: req.isLoggedIn
         });
       }).catch(function(error) {
           console.error(error.stack);
@@ -125,10 +128,12 @@ app.get('/auth/spotify',
       //Successful auth
       console.log({"the_user": req.user, "the_session": req.session})
     console.log('Authenticated!')
+    var username = req.user.dataValues.username
       res.redirect('/search-tracks')
   })
     
 app.get('/ping', (req,res,next) => {
+    console.log(req.username);
     res.send('PONG')
 });
 
@@ -161,6 +166,7 @@ app.post('/registration2', (req,res,next) => {
 app.post('/modal-input', (req,res,next) => {
     var playListType = req.body.playListType;
     var songList = req.body.songList;
+    console.log(songList);
 
     if(playListType === "gym") {
         url = getRandomGymRecommendation(songList);
@@ -169,6 +175,7 @@ app.post('/modal-input', (req,res,next) => {
     } else {
         url = getRandomLaundryRecommendation(songList);
     }
+
     res.redirect('/search-tracks');
     // console.log('On modal-input route req.bodies: ' + playListType + '' + songList)
     // console.log('URL:' + url)
@@ -298,7 +305,8 @@ app.get('/display', function(req, res, next) {
 });
 
 app.get('/logout', function(req, res, next) {
-    res.send('logout');
+    req.logout();
+    res.redirect('/');
     // redirects to /
 });
 
@@ -336,9 +344,19 @@ return axios({
 });
 }
 
-function clientAccessToken() {
-
+function isLoggedIn (req, res, next) {
+    // if req.session.passport is set user is logged in
+    console.log(req.user);
+    if(req.user) {
+        req.username = req.user.dataValues.username;
+        req.isLoggedIn = true;
+    } else {
+        req.isLoggedIn = false;
+    }
+    next();
 }
+
+
 
 function refreshToken() {
     axios({

@@ -12,12 +12,12 @@
         </div>
         <div class="modal-body">
         <form method="POST" action="/modal-input">
-          <input type="radio" id="smallList" name="songList" value="5">
+          <input type="radio" id="smallList" name="songList" value="5" required>
           <input type="hidden" name="playListType" value="gym">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumList" name="songList" value="10">
+          <input type="radio" id="mediumList" name="songList" value="10" required>
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeList" name="songList" value="15">
+          <input type="radio" id="largeList" name="songList" value="15" required>
           <label for="largeList">Large(15 songs)</label><br>
           <button type="submit" id="playlistSubmitButton">Submit</button>
         </form>
@@ -39,12 +39,12 @@
         </div>
         <div class="modal-body">
           <form method="POST" action="/modal-input">
-          <input type="radio" id="smallListT" name="songListT" value="5">
+          <input type="radio" id="smallListT" name="songListT" value="5" required>
           <input type="hidden" name="playListType" value="tan">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListT" name="songListT" value="10">
+          <input type="radio" id="mediumListT" name="songListT" value="10" required>
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListT" name="songListT" value="15">
+          <input type="radio" id="largeListT" name="songListT" value="15" required>
           <label for="largeList">Large(15 songs)</label><br>
         </form>
           <button type="submit" id="playlistSubmitButtonT">Submit</button>
@@ -63,12 +63,12 @@
         </div>
         <div class="modal-body">
         <form method="POST" action="/modal-input"></form>
-          <input type="radio" id="smallListL" name="songListL" value="5">
+          <input type="radio" id="smallListL" name="songListL" value="5" required>
           <input type="hidden" name="playListType" value="laundry">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListL" name="songListL" value="10">
+          <input type="radio" id="mediumListL" name="songListL" value="10" required>
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListL" name="songListL" value="15">
+          <input type="radio" id="largeListL" name="songListL" value="15" required>
           <label for="largeList">Large(15 songs)</label><br>
         </form>
           <button type="submit" id="playlistSubmitButtonL">Submit</button>

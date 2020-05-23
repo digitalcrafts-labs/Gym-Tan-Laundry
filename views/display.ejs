@@ -13,10 +13,17 @@
     <button id="startOver" class="btn btn-warning mr-2">
     <img src="/images/refresh.png" alt="" id="refreshIcon">Start over </button>
   </a>
-  <a href="/auth/spotify"><button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
-    <img src="./Images/spotify.png" alt="" id="spotifyIcon">
-  </button></a>
-
+  <% if(loggedIn) { %>
+    <a href="/logout"><button id="spotifyDashboard" class="btn btn-success">Logout
+      <img src="./Images/spotify.png" alt="" id="spotifyIcon">
+    </button></a>
+  <% } else { %>
+    <a href="/auth/spotify"><button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
+      <img src="./Images/spotify.png" alt="" id="spotifyIcon">
+    </button></a>
+  <% } %>
+  
+</div>
   
   <script>
     // grabbed songs array
@@ -33,6 +40,6 @@
       
   });
   </script>
-</div>
+
 
 <%- include('partials/footer.ejs') %>
