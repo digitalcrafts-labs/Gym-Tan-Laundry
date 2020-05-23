@@ -118,6 +118,26 @@ app.get('/search-tracks', (req,res) => {
       });
 });
 
+app.get('/create-playlist', (req,res) => {
+    
+    axios.post(`https://api.spotify.com/v1/users/12769994/playlists`, {
+        "name": "NEW NEW NEW - TEST! Playlist",
+        "public": "true"
+    }, {
+        headers: {
+            "Authorization": "Bearer BQBUqLM92MYD_RHFp3QskbISYC7Sy9ibtBT4CkxDiTv0vSn3Q0d_c234PQ-1WQlT4XxXIQFYD1Fb8nYefyyqFKXEL-IcB7j0WSk1WVYmnjOmiMoPA6EtuKYph6isskYJ544qHspjIJJrxLyBSes-uRChyyT5b3dWy9vA3vyyhGI7YYZ5HhQ_01SB64Lf",
+            "Content-Type": "application/json"
+        }
+    }
+    ).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(`OOPS! ${error}`)
+    })
+
+})
+
+
 app.get('/auth/spotify',
     passport.authenticate('spotify', {
       scope: ['user-read-email', 'user-read-private', 'playlist-modify-public']
