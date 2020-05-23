@@ -19,10 +19,10 @@
 </div>
 
 <div id="button2">
-  <button id="postToSpotify" class="center btn btn-success">Post your playlist to spotify
+  <a href="/push-to-playlist"><button id="postToSpotify" class="center btn btn-success">Post your playlist to spotify
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
   </button>
-
+  </a>
 </div>
 
 <script>
@@ -34,7 +34,7 @@ var songsFrame = document.getElementsByTagName('iframe');
 // am able to get object syntax only so far
 var tracksID = songsFrame.item(0);
 
-
+/*
 document.getElementById('postToSpotify').addEventListener('click', function() {
 
   axios.post('http:localhost:3002/makeplaylist', songsList)
@@ -42,7 +42,7 @@ document.getElementById('postToSpotify').addEventListener('click', function() {
     debugger;
   })
 })
-
+*/
 const loginWithSpotifyButton = document.getElementById('spotifyDashboard')
 
 loginWithSpotifyButton.addEventListener('click', function(){

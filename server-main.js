@@ -210,6 +210,27 @@ app.post('/makeplaylist', (req,res) => {
 
 })
 
+// Route attempting to create playlist and push songs up to logged-in users spotify account . It's working with hardcoded values for user and their access token
+
+app.get('/push-to-playlist', (req,res) => {
+    
+    axios.post(`https://api.spotify.com/v1/users/12769994/playlists`, {
+        "name": "EVEN NEWER - NEWDAM-TEST! Playlist",
+        "public": "true"
+    }, {
+        headers: {
+            "Authorization": `Bearer BQC36SXh-4gTV28p2fM37HgJYuM6aOrvNSL1WQbJQxyefsBBoVmShWIkcSCnyaWB9Oqm0PHKMx7Pi4Z7rbnQ2nbXraoK6HzsqORvtYEGkvfNUvJNzn1ox-iMe9_WpOoEEBh53PqFWhCiISNoyAJh935qG5cpvR1Yf_JolgLUhNd2KToTaZ75M9ddwDpd`,
+            "Content-Type": "application/json"
+        }
+    }
+    ).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(`OOPS! ${error}`)
+    })
+
+})
+
 app.get('/', function(req, res, next) {
     // renders home
     res.redirect('/Home.html');
