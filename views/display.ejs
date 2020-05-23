@@ -12,17 +12,17 @@
  
   <button id="startOver" class="btn btn-warning mr-2">
     <img src="./Images/refresh.png" alt="" id="refreshIcon">Start over </button>
-  <a href="/auth/spotify"><button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
+  <button id="spotifyDashboard" class="btn btn-success">Login to save/edit with
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
-  </button></a>
+  </button>
 
 </div>
 
 <div id="button2">
-  <a href="/push-to-playlist"><button id="postToSpotify" class="center btn btn-success">Post your playlist to spotify
+  <button id="postToSpotify" class="center btn btn-success">Post your playlist to spotify
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
   </button>
-  </a>
+
 </div>
 
 <script>
@@ -33,12 +33,33 @@
 var songsFrame = document.getElementsByTagName('iframe');
 // am able to get object syntax only so far
 var tracksID = songsFrame.item(0);
-document.getElementById('spotifyDashboard').addEventListener('click', function login_save() {
 
-    console.log('login/save button was clicked');
-    console.log(songsList);
-    
-});
+
+document.getElementById('postToSpotify').addEventListener('click', function() {
+
+  axios.post('/makeplaylist', songsList).then(res =>{
+    console.log(res)
+  })
+})
+
+const loginWithSpotifyButton = document.getElementById('spotifyDashboard')
+
+loginWithSpotifyButton.addEventListener('click', function(){
+
+  //Source https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+ const spotifyWindow= window.open('/auth/spotify', 'Spotify Login', "resizable,scrollbars,status,width=500,height=500")
+ console.log(spotifyWindow)
+ var timer = setInterval(function() { 
+    if(spotifyWindow.closed) {
+        clearInterval(timer);
+        console.log('Closed!')
+
+    }
+}, 1000);
+
+})
+
+
 </script>
 
 <%- include('partials/footer.ejs') %>

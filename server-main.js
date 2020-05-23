@@ -32,7 +32,7 @@ passport.use(
           // user access tokens, not app's
           console.log({accessToken, refreshToken})
           db.Users.findOrCreate({where: {email: profile._json.email, username: profile.username}}).then(user =>{
-                done(null,user[0])
+                done(null, {...user[0], accessToken})
           
         }).catch(e => done(e))
       }
@@ -53,16 +53,17 @@ app.use(express.urlencoded());
 
 //When the auth is successful the id is attached to the session
 passport.serializeUser(function(user, done){
-    done(null, user.id)
+
+    done(null, {id:user.id, accessToken: user.accessToken})
 })
 //Any subsequent requests after the user has been authenticated.
 //We will use the userId attached to the session and query the db for the user.
 //This means in our routes we don't need to query for the user.
 //DeserializeUser will query the Db for us and attach it req.user
-passport.deserializeUser(function(id,done){
-    db.Users.findByPk(id).then(user =>{
+passport.deserializeUser(function(currUser,done){
+    db.Users.findByPk(currUser.id).then(user =>{
         if(user){
-            done(null,user)
+            done(null,{...user, accessToken: currUser.accessToken})
         }
     }).catch(e =>{
         done(e)
@@ -90,6 +91,8 @@ getAppAccessToken()
 // once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
 
 app.get('/search-tracks', (req,res) => {
+    console.log('In HERE!')
+    
     axios({
         url: url,
         method: 'get',
@@ -121,15 +124,16 @@ app.get('/search-tracks', (req,res) => {
 app.get(
     '/auth/spotify',
     passport.authenticate('spotify', {
-      scope: ['user-read-email', 'user-read-private', 'playlist-modify-public']
+        scope: ['user-read-email', 'user-read-private', 'playlist-modify-public'],
+        showDialog: true
     })
   );
 
-  app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
+  app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login'}), function(req,res){
       //Successful auth
       console.log({"the_user": req.user, "the_session": req.session})
     console.log('Authenticated!')
-      res.redirect('/search-tracks')
+      res.send("<script>window.close()</script>")
   })
     
 
@@ -181,14 +185,15 @@ app.post('/modal-input', (req,res,next) => {
 // hardcoded with my (michael) user data
 // Got this code below working, posted a new empty playlist to my account. Right now though everything is hard-coded (user) (token)
 
-app.get('/push-to-playlist', (req,res) => {
-    
-    axios.post(`https://api.spotify.com/v1/users/12769994/playlists`, {
-        "name": "TEST! Playlist",
+app.post('/makeplaylist', (req,res) => {
+    console.log(req.body)
+    res.json('Success')
+    axios.post(`https://api.spotify.com/v1/users/${req.user.username}/playlists`, {
+        "name": "TEST! NUM 2 Playlist",
         "public": "true"
     }, {
         headers: {
-            "Authorization": "Bearer BQClBckfW4DKXg2dnOipi3ieAc8xM0uoc9IqPQ0Z9qPq2QAmpuwIBeY8XFe5YKQ0zaiFq7cf2JI3g8KZE17I7xauIsNXCvsPdtffRYyHBhCl737sctT5S4GjDs5qR-fMOgFBOvjImdXEikcuxo-AXHjqh-p4YZUO2fRInhIFDGK6SQYpv5lomlPwejnb",
+            "Authorization": `Bearer ${req.user.accessToken}`,
             "Content-Type": "application/json"
         }
     }
@@ -268,14 +273,7 @@ app.post('/registration', function(req, res, next) {
 });
 
 app.get('/dashboard', function(req, res, next) {
-    // var scope = 'user-read-private user-read-email playlist-modify-private';
-    // res.redirect('https://accounts.spotify.com/authorize?' +
-    // qs.stringify({
-    //   response_type: 'code',
-    //   client_id: process.env.CLIENT_ID,
-    //   scope: scope,
-    //   redirect_uri: process.env.REDIRECT_URI
-    // }));
+
     res.render('dashboard', {
     //Connected Dashboard ejs to page (JQ 5.19)
     });
