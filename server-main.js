@@ -345,8 +345,9 @@ return axios({
 }
 
 function isLoggedIn (req, res, next) {
-    // if req.ession.passport is set user is logged in
-    if(req.session.passport) {
+    // if req.session.passport is set user is logged in
+    console.log(req.user);
+    if(req.user) {
         req.username = req.user.dataValues.username;
         req.isLoggedIn = true;
     } else {
