@@ -25,6 +25,7 @@ passport.use(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
+        // check this callback for production deployment
         callbackURL: `http://localhost:${PORT}/spotify/callback`
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
@@ -131,9 +132,6 @@ app.get(
       res.redirect('/search-tracks')
   })
     
-app.get('/ping', (req,res,next) => {
-    res.send('PONG')
-});
 
 // New registration route with connection to users table in database
 app.get('/registration2', (req,res,next) => {
@@ -399,6 +397,8 @@ function getRandomTanRecommendation (length){
     return tanUrl;
   };
 
+  // might have found bug aboe in url generation where '?limit=5' .. limit (number of tracks) is set to hardcoded 5 instead of template literal ${length}
+
 // Laundry reccomend function  
 
 function getRandomLaundryRecommendation (length){
@@ -409,3 +409,5 @@ function getRandomLaundryRecommendation (length){
     let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=10&market=US&seed_genres=pop%2C%20${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
     return laundryUrl
   };
+
+    // might have found bug aboe in url generation where '?limit=5' .. limit (number of tracks) is set to hardcoded 5 instead of template literal ${length}
