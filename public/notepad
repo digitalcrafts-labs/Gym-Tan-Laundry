@@ -6,3 +6,6 @@ function getRandomGymRecommendation (length){
    return gymUrl;
 }
 getRandomGymRecommendation(5)
+
+
+axios.post(`${response.data.tracks}?uris=spotify%3Atrack%3A7c3SbTuufigBWURcICnAWy%2Cspotify%3Atrack%3A0iTpQYzJnYgh7kIxyq8A2O`

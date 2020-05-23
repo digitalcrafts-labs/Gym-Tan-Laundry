@@ -118,19 +118,40 @@ app.get('/search-tracks', (req,res) => {
       });
 });
 
+//  var request = require('request')
+
+ app.get('/add-songs'), (req,res) => {
+    axios.post(`https://api.spotify.com/v1/playlists/5UAIGQNNFStCmCb8oq10w6/tracks?uris=spotify%3Atrack%3A7c3SbTuufigBWURcICnAWy%2Cspotify%3Atrack%3A0iTpQYzJnYgh7kIxyq8A2O`)
+    .then(res => {
+        console.log(res)
+    }).catch(err => {
+        console.log('error' + err)
+    })
+ }
+
 app.get('/create-playlist', (req,res) => {
     
     axios.post(`https://api.spotify.com/v1/users/12769994/playlists`, {
-        "name": "NEW NEW NEW - TEST! Playlist",
+        "name": "6- NEW NEW NEW - TEST! Playlist",
         "public": "true"
     }, {
         headers: {
-            "Authorization": "Bearer BQBUqLM92MYD_RHFp3QskbISYC7Sy9ibtBT4CkxDiTv0vSn3Q0d_c234PQ-1WQlT4XxXIQFYD1Fb8nYefyyqFKXEL-IcB7j0WSk1WVYmnjOmiMoPA6EtuKYph6isskYJ544qHspjIJJrxLyBSes-uRChyyT5b3dWy9vA3vyyhGI7YYZ5HhQ_01SB64Lf",
+            "Authorization": `Bearer ${accessToken}`,
             "Content-Type": "application/json"
         }
     }
     ).then(response => {
         console.log(response)
+        /*return axios.post(`${response.data.tracks}?uris=spotify%3Atrack%3A7c3SbTuufigBWURcICnAWy%2Cspotify%3Atrack%3A0iTpQYzJnYgh7kIxyq8A2O`)
+            .then( (req,res) => {
+                res.send('Succeeded at shit')
+            })
+            */
+        // res.redirect('/add-songs')
+        // axios.post(`${response.data.tracks}?uris=spotify%3Atrack%3A7c3SbTuufigBWURcICnAWy%2Cspotify%3Atrack%3A0iTpQYzJnYgh7kIxyq8A2O`)
+        //     .then( (req,res) => {
+        //         res.send('Succeeded at shit')
+        //     })
     }).catch(error => {
         console.log(`OOPS! ${error}`)
     })
