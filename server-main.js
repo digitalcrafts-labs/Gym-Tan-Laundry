@@ -46,6 +46,11 @@ app.use(flash());
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+app.use((req,res, next) =>{
+    console.log(req.path)
+    return next()
+})
+
 // Setting up middleware
 app.use(express.static('public'));
 app.use(express.json());

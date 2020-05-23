@@ -37,8 +37,9 @@ var tracksID = songsFrame.item(0);
 
 document.getElementById('postToSpotify').addEventListener('click', function() {
 
-  axios.post('/makeplaylist', songsList).then(res =>{
-    console.log(res)
+  axios.post('http:localhost:3002/makeplaylist', songsList)
+  .then(res =>{
+    debugger;
   })
 })
 
