@@ -1,4 +1,3 @@
-// require('dotenv').config();
 const express = require('express');
 // Bring in our database (db) connection and models
 const db = require('./models');
@@ -15,6 +14,7 @@ var spotifyWebApi = require('spotify-web-api-node');
 const bcrypt = require('bcrypt');
 const saltRounds = 6;
 var url = '';
+var playlistID;
 
 const PORT = process.env.PORT
 
@@ -86,9 +86,8 @@ getAppAccessToken()
     })})
 
 
-// This route uses our 'algorithm' which is just a choice of using spotify's recommendatinos endpoint ;) .. We provide the parameters, in this case just a few like danceability.
+// This route takes our choice of using spotify's recommendatinos endpoint...We provide the parameters, in this case just a few like danceability.
 // once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
-
 app.get('/search-tracks', (req,res) => {
     axios({
         url: url,
@@ -112,9 +111,6 @@ app.get('/search-tracks', (req,res) => {
           });
           req.session.playtracks = playTracks;
           req.session.uris = playUris;
-          //console.log(searchBlock)
-          //console.log(playTracks)
-          //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
           res.render('display', {
             pageTitle: 'GTL-Track-Search',  
             songs: playTracks,
@@ -133,8 +129,8 @@ app.get('/auth/spotify',
 
 app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
       //Successful auth
-      console.log({"the_user": req.user, "the_session": req.session})
-      console.log('Authenticated!')
+    //   console.log({"the_user": req.user, "the_session": req.session})
+    //   console.log('Authenticated!')
       res.redirect('/display-after-callback');
   })
 
@@ -148,7 +144,7 @@ app.get('/display-after-callback', function(req, res, next) {
 
 app.get('/push-to-playlist', function(req, res, next) {
       axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
-          "name": "EVEN NEWER - NEWDAM-TEST! Playlist",
+          "name": "Gym-Tan-Laundry Playlist",
           "public": "true"
       }, {
           headers: {
@@ -158,6 +154,7 @@ app.get('/push-to-playlist', function(req, res, next) {
       })
       .then(response => {
           console.log("Created playlist");
+          playlistID = `${response.data.id}`;
           axios.post(`https://api.spotify.com/v1/playlists/${response.data.id}/tracks`, {
           "uris": req.session.uris
       }, {
@@ -168,7 +165,10 @@ app.get('/push-to-playlist', function(req, res, next) {
       })
       .then(response => {
         console.log("Populated playlist");
-        res.send("Successfully created playlist");
+        // res.send("Successfully created playlist");
+        res.render('dashboard', {
+            playlistID: playlistID
+        });
       })
       })
       .catch(error => {
@@ -238,21 +238,18 @@ app.post('/login', function(req, res, next) {
     // redirects to profile
 });
 
-app.get('/dashboard', function(req, res, next) {
-    res.render('dashboard', {
-    });
-    // res.send('Profile route');
-    // render profile
-});
+// app.get('/dashboard', function(req, res, next) {
+//     res.render('dashboard', {
+//     });
+//     // res.send('Profile route');
+//     // render profile
+// });
 
 app.get('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
     // redirects to /
 });
-
-
-
 
 /*=====================================================================================================================================*/
 // FUNCTIONS (temporary location)
@@ -297,8 +294,6 @@ function isLoggedIn (req, res, next) {
     next();
 }
 
-
-
 function refreshToken() {
     axios({
         method: 'post',
@@ -321,8 +316,7 @@ function refreshToken() {
     })
 }
 
-// Gym reccomend functions
-
+// Recommendation functions
 function getRandomGymRecommendation (length){
     const gymGenres = ["club", "dance", "happy", "hip-hop", "party", "drum-and-bass", "edm", "pop", "power-pop", "work-out"];
     let gymGenre = gymGenres[Math.floor(Math.random() * gymGenres.length)];
@@ -345,7 +339,7 @@ function getRandomTanRecommendation (length){
     const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study"];
     let laundryGenre = laundryGenres[Math.floor(Math.random() * laundryGenres.length)];
     let laundryDanceability = (Math.random() * (0.1 - .5) + .5).toFixed(1);
-    let laundryPopularity = (Math.random() * (50 - 100) + 100).toFixed(0);
+    let laundryPopularity = (Math.random() * (40 - 100) + 100).toFixed(0);
     let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=pop%2C%20${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
     return laundryUrl
   };
