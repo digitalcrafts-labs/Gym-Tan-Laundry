@@ -120,7 +120,10 @@ app.get('/search-tracks', (req,res) => {
 
 //  var request = require('request')
 
-// this route is continuously failing with a 401 error response code 
+// TRYING TO MANUALLY RUN THIS ROUTE AFTER CREATING A PLAYLIST, MANUALLY ENTERING PLAYLIST ID AND BEARER TOKEN
+// IT CONTINUOUSLY RETURNS 401 ERROR NO MATTER WHAT I TRY, WHETHER I PUT THE SONGS IN THE QUERY PARAMS OR IN THE BODY
+// POSSIBLY DUE TO POST ROUTE EMBEDED IN A GET ROUTE??
+
 app.get('/add-songs', (req,res) => {
     //res.send('PONG!')
     axios.post(`https://api.spotify.com/v1/playlists/7MVGHDfs1PGpn4S1hH2z84/tracks`,
@@ -139,12 +142,14 @@ app.get('/add-songs', (req,res) => {
     })
 }) 
 
+// THIS IS A FALLBACK ROUTE IF WE CANNOT DO FULL FUNCTIONALITY WITH PUSHING SONGS TO USERS SPOTIFY
 // creating route to potentially back-up/pivot our app to simply storing songs picked to our database table 'playlists'
 app.post('/post-to-db', (req,res) => {
     var songSelection = req.body.returnedSongs
     console.log(songSelection)
 })
 
+// APPARENTLY FETCH DOESNT WORK FROM A GET REQUEST
 /*
 app.get('/add-songs-again', (req,res) => {
     fetch('https://api.spotify.com/v1/playlists/7MVGHDfs1PGpn4S1hH2z84/tracks', {
@@ -163,6 +168,9 @@ app.get('/add-songs-again', (req,res) => {
     })
 })
 */
+
+// THIS ROUTE IS WORKING TO CREATE A PLAYLIST. I CANT FIND ANY DOCS OR EXAMPLES THAT SHOW WHERE YOU CAN SEND THE TRACKS UP AT THE SAME TIME AS 
+// THIS REQUEST
 
 app.get('/create-playlist', (req,res) => {
     
