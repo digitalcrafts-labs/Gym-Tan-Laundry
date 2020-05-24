@@ -6,3 +6,9 @@ function getRandomGymRecommendation (length){
    return gymUrl;
 }
 getRandomGymRecommendation(5)
+
+
+
+.then(res => {
+            db.Playlists.create({playlistID:playlistID})
+        })
