@@ -25,27 +25,36 @@
   
 </div>
 
-<div id="newPlaylistButton">
+<div id="newPlaylistButton" class="center">
   <a href="/create-playlist"><button id="createPlaylist" class="btn btn-success">Create new playlist
     <img src="./Images/spotify.png" alt="" id="spotifyIcon">
   </button>
-</a>
+  </a>
+  <form action="/post-to-db" method="POST">
+    <input type="hidden" name="returnedSongs" value="<%= songs %>">
+    <button id="postToDB" type="submit" class="btn btn-success">Send to your GTL playlist
+      <img src="./Images/spotify.png" alt="" id="spotifyIcon">
+    </button>
+  </form>
 </div>
   
   <script>
     // grabbed songs array
    var songsList = "<%= songs %>"
+   console.log('List of Songs: ' + songsList)
    // Attempting to grab the tracks-id or playlist-id that's being injected into the iframe src above.
     // afterwhich hopefully storing that value in a variable, then we can push that ID up to our own database
-  var songsFrame = document.getElementsByTagName('iframe');
+  /*var songsFrame = document.getElementsByTagName('iframe');
   // am able to get object syntax only so far
   var tracksID = songsFrame.item(0);
+
   document.getElementById('spotifyDashboard').addEventListener('click', function login_save() {
 
       console.log('login/save button was clicked');
       console.log(songsList);
       
   });
+  */
   </script>
 
 

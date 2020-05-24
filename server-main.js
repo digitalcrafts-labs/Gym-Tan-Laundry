@@ -120,23 +120,58 @@ app.get('/search-tracks', (req,res) => {
 
 //  var request = require('request')
 
- app.get('/add-songs'), (req,res) => {
-    axios.post(`https://api.spotify.com/v1/playlists/5UAIGQNNFStCmCb8oq10w6/tracks?uris=spotify%3Atrack%3A7c3SbTuufigBWURcICnAWy%2Cspotify%3Atrack%3A0iTpQYzJnYgh7kIxyq8A2O`)
-    .then(res => {
+// this route is continuously failing with a 401 error response code 
+app.get('/add-songs', (req,res) => {
+    //res.send('PONG!')
+    axios.post(`https://api.spotify.com/v1/playlists/7MVGHDfs1PGpn4S1hH2z84/tracks`,
+    {
+        headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer BQCUFDCYahiGIL0rvmG-GdYa6U6cb69u1MOZqEanVSWVUr3HWO3cJkzAzkqCxnZ6r5S4BvaSp7P178WQgbqnMKXhV68xBWEBqIjjifYuA4gCgS6qqHAOOtaLyV6pH-1yIERwGLBGZcGqJJ0whwbPGfWAaf28R01arE4qi4wZQcznxZT3TBkIvjN3l1rfuMGFQTjCfBu_oGK0nG5gjKo5f_k9Tw`,
+            "Content-Type": "application/json"
+        },
+        body: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]}
+    }
+    ).then(res => {
         console.log(res)
-    }).catch(err => {
-        console.log('error' + err)
+    }).catch(error => {
+        console.log('WHOA! Error:' + error)
     })
- }
+}) 
+
+// creating route to potentially back-up/pivot our app to simply storing songs picked to our database table 'playlists'
+app.post('/post-to-db', (req,res) => {
+    var songSelection = req.body.returnedSongs
+    console.log(songSelection)
+})
+
+/*
+app.get('/add-songs-again', (req,res) => {
+    fetch('https://api.spotify.com/v1/playlists/7MVGHDfs1PGpn4S1hH2z84/tracks', {
+        method: "post",
+        headers: {
+            "Authorization": "Bearer BQCUFDCYahiGIL0rvmG-GdYa6U6cb69u1MOZqEanVSWVUr3HWO3cJkzAzkqCxnZ6r5S4BvaSp7P178WQgbqnMKXhV68xBWEBqIjjifYuA4gCgS6qqHAOOtaLyV6pH-1yIERwGLBGZcGqJJ0whwbPGfWAaf28R01arE4qi4wZQcznxZT3TBkIvjN3l1rfuMGFQTjCfBu_oGK0nG5gjKo5f_k9Tw",
+            "Content-Type": "application/json"
+        },
+        body: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]}
+    })
+    .then(response => {
+        console.log(response)
+    })
+    .catch(error => {
+        console.log(`FoopsieDoopsie: ${error}`)
+    })
+})
+*/
 
 app.get('/create-playlist', (req,res) => {
     
-    axios.post(`https://api.spotify.com/v1/users/12769994/playlists`, {
-        "name": "6- NEW NEW NEW - TEST! Playlist",
+    axios.post(`https://api.spotify.com/v1/users/12769994/playlists/`, {
+        "name": "9 - NEW NEW NEW - TEST! Playlist",
         "public": "true"
     }, {
         headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            "Authorization": `Bearer BQCUFDCYahiGIL0rvmG-GdYa6U6cb69u1MOZqEanVSWVUr3HWO3cJkzAzkqCxnZ6r5S4BvaSp7P178WQgbqnMKXhV68xBWEBqIjjifYuA4gCgS6qqHAOOtaLyV6pH-1yIERwGLBGZcGqJJ0whwbPGfWAaf28R01arE4qi4wZQcznxZT3TBkIvjN3l1rfuMGFQTjCfBu_oGK0nG5gjKo5f_k9Tw`,
             "Content-Type": "application/json"
         }
     }
@@ -161,7 +196,7 @@ app.get('/create-playlist', (req,res) => {
 
 app.get('/auth/spotify',
     passport.authenticate('spotify', {
-      scope: ['user-read-email', 'user-read-private', 'playlist-modify-public']
+      scope: ['user-read-email', 'user-read-private', 'playlist-modify-public', 'playlist-modify-private']
     })
   );
 
