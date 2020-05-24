@@ -3,9 +3,11 @@
 
     <!-- Playlists -->
     <div id="playlists" class="mx-auto">
+        <div class="col-xs-12 text-center">
         <!-- We will  make the h2 below be dynamic to fill in the users name once we connect to the API-->
         <h2 id="welcomeDashboard">Here's your brand new playlist!</h2>
         <iframe src="https://open.spotify.com/embed/playlist/<%= playlistID %>" width="400" height="480" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     </div>
+</div>
 
 <%- include('partials/footer.ejs') %>

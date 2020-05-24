@@ -27,9 +27,7 @@ passport.use(
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
           // user access tokens, not app's
-          console.log({accessToken, refreshToken})
           db.Users.findOrCreate({where: {email: profile._json.email, username: profile.username}}).then(user =>{
-              console.log(user[0]);
                 done(null, { id: user[0].id, accessToken, refreshToken, username: user[0].username })
           
         }).catch(e => done(e))
@@ -101,7 +99,6 @@ app.get('/search-tracks', (req,res) => {
           'Authorization': `Bearer ${applicationAccessToken}`
         },
       }).then(function(response) {
-          console.log(response.data);
           var searchBlock = response.data.tracks
           var playTracks = searchBlock.map(track => {
             return track.id
@@ -129,8 +126,6 @@ app.get('/auth/spotify',
 
 app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
       //Successful auth
-    //   console.log({"the_user": req.user, "the_session": req.session})
-    //   console.log('Authenticated!')
       res.redirect('/display-after-callback');
   })
 
@@ -153,7 +148,6 @@ app.get('/push-to-playlist', function(req, res, next) {
           }
       })
       .then(response => {
-          console.log("Created playlist");
           playlistID = `${response.data.id}`;
           axios.post(`https://api.spotify.com/v1/playlists/${response.data.id}/tracks`, {
           "uris": req.session.uris
@@ -164,8 +158,6 @@ app.get('/push-to-playlist', function(req, res, next) {
           }
       })
       .then(response => {
-        console.log("Populated playlist");
-        // res.send("Successfully created playlist");
         res.render('dashboard', {
             playlistID: playlistID
         });
@@ -187,7 +179,7 @@ app.get('/registration2', (req,res,next) => {
 // New registration post route which will bcrypt-hash the users password input, then create
 // that user in our users database table
 app.post('/registration2', (req,res,next) => {
-    console.log('This is the req.body:' + req.body)
+    // console.log('This is the req.body:' + req.body)
     const username = req.body.username
     const email = req.body.email
 
@@ -206,10 +198,7 @@ app.post('/registration2', (req,res,next) => {
 app.post('/modal-input', (req,res,next) => {
     var playListType = req.body.playListType;
     var songList = req.body.songList;
-    console.log(songList);
-    console.log(req.session);
     
-
     if(playListType === "gym") {
         url = getRandomGymRecommendation(songList);
     } else if (playListType === "tan") {
@@ -217,10 +206,7 @@ app.post('/modal-input', (req,res,next) => {
     } else {
         url = getRandomLaundryRecommendation(songList);
     }
-
     res.redirect('/search-tracks');
-    // console.log('On modal-input route req.bodies: ' + playListType + '' + songList)
-    // console.log('URL:' + url)
 });
 
 app.get('/', function(req, res, next) {
