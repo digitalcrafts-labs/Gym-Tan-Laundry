@@ -79,10 +79,10 @@ let clientTokenObj = {};
 
 var spotifyApi = new spotifyWebApi();
 
-
+// Get Public access token and start the server
 getAppAccessToken()
     .then(()=> {app.listen(PORT, function(req, res, next) {
-        console.log('Server started on port:' + PORT);
+        console.log('GTL Server started on port:' + PORT);
     })})
 
 
@@ -131,14 +131,14 @@ app.get('/auth/spotify',
     })
   );
 
-  app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
+app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
       //Successful auth
       console.log({"the_user": req.user, "the_session": req.session})
       console.log('Authenticated!')
       res.redirect('/display-after-callback');
   })
 
-  app.get('/display-after-callback', function(req, res, next) {
+app.get('/display-after-callback', function(req, res, next) {
     res.render('display', {
         pageTitle: 'GTL-Track-Search',  
         songs: req.session.playtracks,
@@ -146,7 +146,7 @@ app.get('/auth/spotify',
     });
   }) 
 
-  app.get('/push-to-playlist', function(req, res, next) {
+app.get('/push-to-playlist', function(req, res, next) {
       axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
           "name": "EVEN NEWER - NEWDAM-TEST! Playlist",
           "public": "true"
@@ -228,40 +228,8 @@ app.get('/', function(req, res, next) {
     res.render('home');
 });
 
-
 app.get('/login', function(req, res, next) {
     res.render('login');
-})
-
-app.get('/login/callback', function(req, res, next) {
-    //req.query.code = code(if user accepts) req.query.error = error(if user does not accept or error occurs)
-    console.log('callback called');
-    if(!req.query.error) {
-        axios({
-            method: 'post',
-            url: 'https://accounts.spotify.com/api/token',
-            data: 
-                `grant_type=authorization_code&code=${req.query.code}&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback`,
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded',
-            },
-            auth: {
-                username: process.env.CLIENT_ID,
-                password: process.env.CLIENT_SECRET
-            }
-        })
-        .then((response) => {
-            console.log(response.data);
-            clientTokenObj = response.data;
-            res.send('received access token');
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-    } else {
-        res.send('You clicked cancel or error occured');
-    }
-    
 })
 
 app.post('/login', function(req, res, next) {
@@ -270,15 +238,12 @@ app.post('/login', function(req, res, next) {
     // redirects to profile
 });
 
-
 app.get('/dashboard', function(req, res, next) {
     res.render('dashboard', {
     });
     // res.send('Profile route');
     // render profile
 });
-
-
 
 app.get('/logout', function(req, res, next) {
     req.logout();
