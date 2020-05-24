@@ -29,7 +29,8 @@ passport.use(
           // user access tokens, not app's
           console.log({accessToken, refreshToken})
           db.Users.findOrCreate({where: {email: profile._json.email, username: profile.username}}).then(user =>{
-                done(null,user[0])
+              console.log(user[0]);
+                done(null, { id: user[0].id, accessToken, refreshToken, username: user[0].username })
           
         }).catch(e => done(e))
       }
@@ -50,16 +51,16 @@ app.use(express.urlencoded());
 
 //When the auth is successful the id is attached to the session
 passport.serializeUser(function(user, done){
-    done(null, user.id)
+    done(null, { id: user.id, accessToken: user.accessToken, refreshToken: user.refreshToken, username: user.username })
 })
 //Any subsequent requests after the user has been authenticated.
 //We will use the userId attached to the session and query the db for the user.
 //This means in our routes we don't need to query for the user.
 //DeserializeUser will query the Db for us and attach it req.user
-passport.deserializeUser(function(id,done){
-    db.Users.findByPk(id).then(user =>{
-        if(user){
-            done(null,user)
+passport.deserializeUser(function(user,done){
+    db.Users.findByPk(user.id).then(foundUser =>{
+        if(foundUser){
+            done(null, { foundUser, accessToken: user.accessToken, refreshToken: user.refreshToken, username: user.username })
         }
     }).catch(e =>{
         done(e)
@@ -72,7 +73,8 @@ app.use(require('./routes'));
 app.use(isLoggedIn);
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
-let accessToken = "";
+let applicationAccessToken = "";
+let clientAccessToken;
 let clientTokenObj = {};
 
 var spotifyApi = new spotifyWebApi();
@@ -81,7 +83,6 @@ var spotifyApi = new spotifyWebApi();
 getAppAccessToken()
     .then(()=> {app.listen(PORT, function(req, res, next) {
         console.log('Server started on port:' + PORT);
-        setInterval(getAppAccessToken, 3500000);
     })})
 
 
@@ -98,13 +99,19 @@ app.get('/search-tracks', (req,res) => {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Authorization': `Bearer ${applicationAccessToken}`
         },
       }).then(function(response) {
+          console.log(response.data);
           var searchBlock = response.data.tracks
           var playTracks = searchBlock.map(track => {
             return track.id
           });
+          var playUris = searchBlock.map(track => {
+              return track.uri;
+          });
+          req.session.playtracks = playTracks;
+          req.session.uris = playUris;
           //console.log(searchBlock)
           //console.log(playTracks)
           //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
@@ -127,9 +134,46 @@ app.get('/auth/spotify',
   app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
       //Successful auth
       console.log({"the_user": req.user, "the_session": req.session})
-    console.log('Authenticated!')
-    var username = req.user.dataValues.username
-      res.redirect('/search-tracks')
+      console.log('Authenticated!')
+      res.redirect('/display-after-callback');
+  })
+
+  app.get('/display-after-callback', function(req, res, next) {
+    res.render('display', {
+        pageTitle: 'GTL-Track-Search',  
+        songs: req.session.playtracks,
+        loggedIn: true
+    });
+  }) 
+
+  app.get('/push-to-playlist', function(req, res, next) {
+      axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
+          "name": "EVEN NEWER - NEWDAM-TEST! Playlist",
+          "public": "true"
+      }, {
+          headers: {
+              "Authorization": `Bearer ${clientAccessToken}`,
+              "Content-Type": "application/json"
+          }
+      })
+      .then(response => {
+          console.log("Created playlist");
+          axios.post(`https://api.spotify.com/v1/playlists/${response.data.id}/tracks`, {
+          "uris": req.session.uris
+      }, {
+          headers: {
+              "Authorization": `Bearer ${clientAccessToken}`,
+              "Content-Type": "application/json"
+          }
+      })
+      .then(response => {
+        console.log("Populated playlist");
+        res.send("Successfully created playlist");
+      })
+      })
+      .catch(error => {
+          console.log(`OOPS! ${error}`);
+      })
   })
     
 app.get('/ping', (req,res,next) => {
@@ -167,6 +211,8 @@ app.post('/modal-input', (req,res,next) => {
     var playListType = req.body.playListType;
     var songList = req.body.songList;
     console.log(songList);
+    console.log(req.session);
+    
 
     if(playListType === "gym") {
         url = getRandomGymRecommendation(songList);
@@ -291,7 +337,7 @@ app.get('/display', function(req, res, next) {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Authorization': `Bearer ${applicationAccessToken}`
         },
       }).then(function(response) {
           //console.log(response.data.tracks)
@@ -336,7 +382,7 @@ return axios({
     }
 })
 .then((result) => {
-    accessToken = result.data.access_token;
+    applicationAccessToken = result.data.access_token;
 
 })
 .catch((err) => {
@@ -345,10 +391,10 @@ return axios({
 }
 
 function isLoggedIn (req, res, next) {
-    // if req.session.passport is set user is logged in
-    console.log(req.user);
+    // if req.user is set user is logged in
     if(req.user) {
-        req.username = req.user.dataValues.username;
+        clientAccessToken = req.user.accessToken;
+        req.username = req.user.username;
         req.isLoggedIn = true;
     } else {
         req.isLoggedIn = false;
