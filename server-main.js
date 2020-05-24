@@ -176,10 +176,6 @@ app.get('/auth/spotify',
       })
   })
     
-app.get('/ping', (req,res,next) => {
-    console.log(req.username);
-    res.send('PONG')
-});
 
 // New registration route with connection to users table in database
 app.get('/registration2', (req,res,next) => {
@@ -232,15 +228,6 @@ app.get('/', function(req, res, next) {
     res.render('home');
 });
 
-app.get('/testaxios', function(req, res, next) {
-    let randomState = randomstring.generate();
-    res.redirect(`https://accounts.spotify.com/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback&scope=user-read-private%20user-read-email&state=${randomState}&show_dialog=true`);
-});
-
-app.get('/testrefresh', function(req, res, next) {
-    refreshToken();
-    res.send('testing refresh token');
-})
 
 app.get('/login', function(req, res, next) {
     res.render('login');
