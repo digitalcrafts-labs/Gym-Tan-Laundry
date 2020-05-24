@@ -163,40 +163,18 @@ app.get('/push-to-playlist', function(req, res, next) {
       .then(response => {
         res.render('dashboard', {
             playlistID: playlistID
-        });
+        })
+        // attempting to send newly created playlistID to our database linked to the spotifyID of the user
+        .then(response => {
+            db.Playlists.create({ playlistID })
+        })  
       })
       })
       .catch(error => {
           console.log(`OOPS! ${error}`);
       })
   })
-    
 
-// New registration route with connection to users table in database
-app.get('/registration2', (req,res,next) => {
-    res.render('registration2', {
-        pageTitle: 'GTL-Registration'
-    })
-})
-
-// New registration post route which will bcrypt-hash the users password input, then create
-// that user in our users database table
-app.post('/registration2', (req,res,next) => {
-    // console.log('This is the req.body:' + req.body)
-    const username = req.body.username
-    const email = req.body.email
-
-    bcrypt.hash(req.body.password, saltRounds)
-        .then(hashedPass => {
-            db.Users.create({ username: username, email: email, password: hashedPass })
-                .then(newDbUser => {
-                    res.render('regSuccess', {
-                        pageTitle: 'Success!'
-                    })
-
-                })
-        })
-})
 
 app.post('/modal-input', (req,res,next) => {
      playListType = req.body.playListType;
