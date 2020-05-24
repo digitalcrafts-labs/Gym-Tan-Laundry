@@ -15,7 +15,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 6;
 var url = '';
 var playlistID;
-
+var playListType = '';
+var songList = '';
 const PORT = process.env.PORT
 
 passport.use(
@@ -23,7 +24,7 @@ passport.use(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: `http://localhost:${PORT}/spotify/callback`
+        callbackURL: process.env.CALLBACK_URL
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
           // user access tokens, not app's
@@ -99,6 +100,8 @@ app.get('/search-tracks', (req,res) => {
           'Authorization': `Bearer ${applicationAccessToken}`
         },
       }).then(function(response) {
+
+          console.log(response.data.tracks);
           var searchBlock = response.data.tracks
           var playTracks = searchBlock.map(track => {
             return track.id
@@ -139,7 +142,7 @@ app.get('/display-after-callback', function(req, res, next) {
 
 app.get('/push-to-playlist', function(req, res, next) {
       axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
-          "name": "Gym-Tan-Laundry Playlist",
+          "name": `GTL ${playListType} ${songList}`,
           "public": "true"
       }, {
           headers: {
