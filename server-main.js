@@ -1,4 +1,3 @@
-// require('dotenv').config();
 const express = require('express');
 // Bring in our database (db) connection and models
 const db = require('./models');
@@ -15,6 +14,7 @@ var spotifyWebApi = require('spotify-web-api-node');
 const bcrypt = require('bcrypt');
 const saltRounds = 6;
 var url = '';
+var playlistID;
 
 const PORT = process.env.PORT
 
@@ -79,16 +79,15 @@ let clientTokenObj = {};
 
 var spotifyApi = new spotifyWebApi();
 
-
+// Get Public access token and start the server
 getAppAccessToken()
     .then(()=> {app.listen(PORT, function(req, res, next) {
-        console.log('Server started on port:' + PORT);
+        console.log('GTL Server started on port:' + PORT);
     })})
 
 
-// This route uses our 'algorithm' which is just a choice of using spotify's recommendatinos endpoint ;) .. We provide the parameters, in this case just a few like danceability.
+// This route takes our choice of using spotify's recommendatinos endpoint...We provide the parameters, in this case just a few like danceability.
 // once that song object is pulled down (response.data.tracks) we map over that array and pull out the individual song id's which are then sent to the display page for rendering/playing
-
 app.get('/search-tracks', (req,res) => {
     axios({
         url: url,
@@ -112,9 +111,6 @@ app.get('/search-tracks', (req,res) => {
           });
           req.session.playtracks = playTracks;
           req.session.uris = playUris;
-          //console.log(searchBlock)
-          //console.log(playTracks)
-          //console.log('SEARCH RESPONSE: ' + JSON.stringify(response.data.tracks[1].id))
           res.render('display', {
             pageTitle: 'GTL-Track-Search',  
             songs: playTracks,
@@ -131,14 +127,14 @@ app.get('/auth/spotify',
     })
   );
 
-  app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
+app.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req,res){
       //Successful auth
-      console.log({"the_user": req.user, "the_session": req.session})
-      console.log('Authenticated!')
+    //   console.log({"the_user": req.user, "the_session": req.session})
+    //   console.log('Authenticated!')
       res.redirect('/display-after-callback');
   })
 
-  app.get('/display-after-callback', function(req, res, next) {
+app.get('/display-after-callback', function(req, res, next) {
     res.render('display', {
         pageTitle: 'GTL-Track-Search',  
         songs: req.session.playtracks,
@@ -146,9 +142,9 @@ app.get('/auth/spotify',
     });
   }) 
 
-  app.get('/push-to-playlist', function(req, res, next) {
+app.get('/push-to-playlist', function(req, res, next) {
       axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
-          "name": "EVEN NEWER - NEWDAM-TEST! Playlist",
+          "name": "Gym-Tan-Laundry Playlist",
           "public": "true"
       }, {
           headers: {
@@ -158,6 +154,7 @@ app.get('/auth/spotify',
       })
       .then(response => {
           console.log("Created playlist");
+          playlistID = `${response.data.id}`;
           axios.post(`https://api.spotify.com/v1/playlists/${response.data.id}/tracks`, {
           "uris": req.session.uris
       }, {
@@ -168,7 +165,10 @@ app.get('/auth/spotify',
       })
       .then(response => {
         console.log("Populated playlist");
-        res.send("Successfully created playlist");
+        // res.send("Successfully created playlist");
+        res.render('dashboard', {
+            playlistID: playlistID
+        });
       })
       })
       .catch(error => {
@@ -176,10 +176,6 @@ app.get('/auth/spotify',
       })
   })
     
-app.get('/ping', (req,res,next) => {
-    console.log(req.username);
-    res.send('PONG')
-});
 
 // New registration route with connection to users table in database
 app.get('/registration2', (req,res,next) => {
@@ -232,49 +228,8 @@ app.get('/', function(req, res, next) {
     res.render('home');
 });
 
-app.get('/testaxios', function(req, res, next) {
-    let randomState = randomstring.generate();
-    res.redirect(`https://accounts.spotify.com/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback&scope=user-read-private%20user-read-email&state=${randomState}&show_dialog=true`);
-});
-
-app.get('/testrefresh', function(req, res, next) {
-    refreshToken();
-    res.send('testing refresh token');
-})
-
 app.get('/login', function(req, res, next) {
     res.render('login');
-})
-
-app.get('/login/callback', function(req, res, next) {
-    //req.query.code = code(if user accepts) req.query.error = error(if user does not accept or error occurs)
-    console.log('callback called');
-    if(!req.query.error) {
-        axios({
-            method: 'post',
-            url: 'https://accounts.spotify.com/api/token',
-            data: 
-                `grant_type=authorization_code&code=${req.query.code}&redirect_uri=http%3A%2F%2Flocalhost%3A3002%2Flogin%2Fcallback`,
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded',
-            },
-            auth: {
-                username: process.env.CLIENT_ID,
-                password: process.env.CLIENT_SECRET
-            }
-        })
-        .then((response) => {
-            console.log(response.data);
-            clientTokenObj = response.data;
-            res.send('received access token');
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-    } else {
-        res.send('You clicked cancel or error occured');
-    }
-    
 })
 
 app.post('/login', function(req, res, next) {
@@ -283,81 +238,18 @@ app.post('/login', function(req, res, next) {
     // redirects to profile
 });
 
-app.get('/registration', function(req, res, next) {
-    // renders registration
-    res.render('registration');
-});
-
-app.post('/registration', function(req, res, next) {
-    res.send('Registration post route');
-    // redirects to /
-    
-});
-
-app.get('/dashboard', function(req, res, next) {
-    res.render('dashboard', {
-    });
-    // res.send('Profile route');
-    // render profile
-});
-
-// Creating a new test route to work with rec url params. This is currently 400'ing
-app.get('/search', function(req, res, next) {
-    axios({
-        url: 'https://api.spotify.com/v1/recommendations?limit=5&market=US&seed_genres=pop%2C%20hip-hop&min_danceability=.4&max_danceability=.9&target_danceability=.3&target_energy=.5&min_popularity=50&target_popularity=70&min_tempo=120&max_tempo=140&target_tempo=125" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQADRGoxQHhkH8cvjaFZpXJUt0PNh_vXFm99LDcI6Q_7UcsXmiLUTeymQ8OTc3p_O6Ypg9gEtfuoQfJa8FcKJuf-O-ZTiwmjCNcUJB-JpzfC96K8tfHlzlG_rjBxTmtXaQkuXI1b6nfD',
-        method: 'get',
-        params: {
-          grant_type: 'client_credentials'
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-      }).then(function(response) {
-          console.log(response.data.tracks)
-          res.render('search', {
-            pageTitle: "GTL-Test-Song-Pull",  
-            trackSearch: response.data.tracks
-        });
-      }).catch(function(error) {
-          console.error(error);
-      });
-});
-
-
-
-app.get('/display', function(req, res, next) {
-    axios({
-        url: 'https://api.spotify.com/v1/tracks/?ids=6BvtitRX5lQC87YlA6rq0n,2mtLGVN6xZm93wDG9nvviS,66flQ66BQfCl1yJsaPRNrN,6H0AwSQ20mo62jGlPGB8S6,2rmq49FcJ4U3wh1Z7C9UxE',
-        method: 'get',
-        params: {
-          grant_type: 'client_credentials'
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${applicationAccessToken}`
-        },
-      }).then(function(response) {
-          //console.log(response.data.tracks)
-          res.render('display', {
-            pageTitle: "GTL-Test-Song-Pull",  
-            songs: response.data.tracks
-        });
-      }).catch(function(error) {
-          console.error(error);
-      });
-});
+// app.get('/dashboard', function(req, res, next) {
+//     res.render('dashboard', {
+//     });
+//     // res.send('Profile route');
+//     // render profile
+// });
 
 app.get('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
     // redirects to /
 });
-
-
-
 
 /*=====================================================================================================================================*/
 // FUNCTIONS (temporary location)
@@ -402,8 +294,6 @@ function isLoggedIn (req, res, next) {
     next();
 }
 
-
-
 function refreshToken() {
     axios({
         method: 'post',
@@ -426,8 +316,7 @@ function refreshToken() {
     })
 }
 
-// Gym reccomend functions
-
+// Recommendation functions
 function getRandomGymRecommendation (length){
     const gymGenres = ["club", "dance", "happy", "hip-hop", "party", "drum-and-bass", "edm", "pop", "power-pop", "work-out"];
     let gymGenre = gymGenres[Math.floor(Math.random() * gymGenres.length)];
@@ -450,7 +339,7 @@ function getRandomTanRecommendation (length){
     const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study"];
     let laundryGenre = laundryGenres[Math.floor(Math.random() * laundryGenres.length)];
     let laundryDanceability = (Math.random() * (0.1 - .5) + .5).toFixed(1);
-    let laundryPopularity = (Math.random() * (50 - 100) + 100).toFixed(0);
+    let laundryPopularity = (Math.random() * (40 - 100) + 100).toFixed(0);
     let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=pop%2C%20${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
     return laundryUrl
   };
