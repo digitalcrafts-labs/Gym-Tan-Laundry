@@ -161,13 +161,17 @@ app.get('/push-to-playlist', function(req, res, next) {
           }
       })
       .then(response => {
+        db.Playlists.create({ playlistID })
+        .then(newPlaylist => {
+            console.log('Playlist added to Database')
+        })
         res.render('dashboard', {
             playlistID: playlistID
         })
-        // attempting to send newly created playlistID to our database linked to the spotifyID of the user
-        .then(response => {
-            db.Playlists.create({ playlistID })
-        })  
+        .catch(err => {
+            console.log('There was an error: ' + err)
+        })
+        // attempting to send newly created playlistID to our database linked to the spotifyID of the user  
       })
       })
       .catch(error => {
