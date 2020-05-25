@@ -81,7 +81,8 @@ var spotifyApi = new spotifyWebApi();
 // Get Public access token and start the server
 getAppAccessToken()
     .then(()=> {app.listen(PORT, function(req, res, next) {
-        console.log('GTL Server started on port:' + PORT);
+        console.log('GTL Server started on port:' + PORT)
+        console.log(applicationAccessToken)
     })})
 
 
@@ -245,6 +246,7 @@ return axios({
     }
 })
 .then((result) => {
+    
     applicationAccessToken = result.data.access_token;
 
 })
