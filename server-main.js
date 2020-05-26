@@ -250,6 +250,10 @@ app.get('/logout', function(req, res, next) {
 
 // Use axios request to get access token from spotify api to make requests for home 
 // and display page when user is not logged in
+
+// App access token appears to be expiring about an hour after server code is started
+// Looking for options to fix
+
 function getAppAccessToken() {
     
 return axios({

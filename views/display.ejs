@@ -5,27 +5,28 @@
         <div id="songContainer" class="row py-1 px-3">
            <!-- Players rendered here -->
            <% songs.map(song => { %>
-            <iframe src="https://open.spotify.com/embed/track/<%= song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            <iframe src="https://open.spotify.com/embed/track/<%= song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="opacity:.85; margin:.2em;"></iframe>
           <% })   %> 
         </div>
-<div id="buttonDiv" class="mx-auto d-flex justify-content-center p-3">
+<div id="buttonDiv" class="mx-auto d-flex justify-content-center p-2">
   <a href="/">
     <button id="startOver" class="btn btn-warning mr-2">
     <img src="/images/refresh.png" alt="" id="refreshIcon">Start over </button>
   </a>
+</div>
+<div id="buttonDiv2" class="mx-auto d-flex justify-content-center p-2">
   <% if(loggedIn) { %>
-    <a href="/logout"><button id="spotifyDashboard" class="btn btn-success">Logout
+    <a href="/logout"><button id="spotifyDashboard" class="btn btn-success" style="opacity:.85; margin:.2em; padding:.5em;">Logout
       <img src="/images/spotify.png" alt="" id="spotifyIcon">
     </button></a>
-    <a href="/push-to-playlist"><button id="spotifyDashboard" class="btn btn-success">Create playlist with
+    <a href="/push-to-playlist"><button id="spotifyDashboard" class="btn btn-success" style="opacity:.85; margin:.2em; padding:.5em;">Create playlist with
       <img src="/images/spotify.png" alt="" id="spotifyIcon">
     </button></a>
   <% } else { %>
-    <a href="/auth/spotify"><button id="spotifyDashboard2" class="btn btn-success mx-2">Login to save with
+    <a href="/auth/spotify"><button id="spotifyDashboard2" class="btn btn-success mx-2" style="opacity:.85; margin:.2em; padding:.5em;">Login to save with
       <img src="/images/spotify.png" alt="" id="spotifyIcon">
     </button></a>
   <% } %>
-  
 </div>
   <!--
     
