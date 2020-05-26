@@ -18,13 +18,15 @@ var playlistID;
 var playListType = '';
 var songList = '';
 const PORT = process.env.PORT
+let appTimer = 0;
+
 
 passport.use(
     new SpotifyStrategy(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: process.env.CALLBACK_URL
+        callbackURL: process.env.CALLBACK_URL || `http://localhost:${PORT}/spotify/callback`
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
           // user access tokens, not app's
@@ -36,7 +38,7 @@ passport.use(
     )
   );
 
-app.use(session({secret: process.env.APP_SECRET}));
+app.use(session({secret: process.env.APP_SECRET, cookie: {maxAge: 3600000}}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -69,11 +71,12 @@ passport.deserializeUser(function(user,done){
 // Insert router as middleware
 app.use(require('./routes'));
 */
+app.use(refreshAppToken);
 app.use(isLoggedIn);
 
 let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
 let applicationAccessToken = "";
-let clientAccessToken;
+let clientAccessToken = "";
 let clientTokenObj = {};
 
 var spotifyApi = new spotifyWebApi();
@@ -101,7 +104,7 @@ app.get('/search-tracks', (req,res) => {
         },
       }).then(function(response) {
 
-          console.log(response.data.tracks);
+          
           var searchBlock = response.data.tracks
           var playTracks = searchBlock.map(track => {
             return track.id
@@ -168,6 +171,7 @@ app.get('/push-to-playlist', function(req, res, next) {
       })
       .catch(error => {
           console.log(`OOPS! ${error}`);
+          console.log(clientAccessToken);
       })
   })
     
@@ -264,7 +268,7 @@ return axios({
 })
 .then((result) => {
     applicationAccessToken = result.data.access_token;
-
+    appTimer = Date.now();
 })
 .catch((err) => {
     console.log(err);    
@@ -283,8 +287,20 @@ function isLoggedIn (req, res, next) {
     next();
 }
 
+function refreshAppToken(req, res, next) {
+    if(appTimer) {
+        // 3540000 in milliseconds is 3540 seconds which is 59 minutes
+        // check to see if 59 minutes have elapsed and refresh token
+        if((Date.now() - appTimer) >= 3540000) {
+            getAppAccessToken().then(next())
+        } else {
+            next();
+        }
+    }
+}
+
 function refreshToken() {
-    axios({
+    return axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
         data: 
@@ -298,7 +314,7 @@ function refreshToken() {
         }
     })
     .then((response) => {
-        console.log(response.data);
+        clientAccessToken = response.data.access_token;
     })
     .catch((err) => {
         console.error(err);
