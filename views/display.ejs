@@ -14,7 +14,7 @@
     <img src="/images/refresh.png" alt="" id="refreshIcon">Start over </button>
   </a>
 </div>
-<div id="buttonDiv2" class="mx-auto d-flex justify-content-center p-2">
+<div id="buttonDiv2" class="mx-auto d-flex justify-content-center p-2 mb-5">
   <% if(loggedIn) { %>
     <a href="/logout"><button id="spotifyDashboard" class="btn btn-success" style="opacity:.85; margin:.2em; padding:.5em;">Logout
       <img src="/images/spotify.png" alt="" id="spotifyIcon">
@@ -28,23 +28,5 @@
     </button></a>
   <% } %>
 </div>
-  <!--
-    
-  <script>
-    // grabbed songs array
-   var songsList = "<%= songs %>"
-   // Attempting to grab the tracks-id or playlist-id that's being injected into the iframe src above.
-    // afterwhich hopefully storing that value in a variable, then we can push that ID up to our own database
-  var songsFrame = document.getElementsByTagName('iframe');
-  // am able to get object syntax only so far
-  var tracksID = songsFrame.item(0);
-  document.getElementById('spotifyDashboard').addEventListener('click', function login_save() {
 
-      console.log('login/save button was clicked');
-      console.log(songsList);
-      
-  });
-  </script>
-
--->
 <%- include('partials/footer.ejs') %>

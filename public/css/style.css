@@ -1,7 +1,7 @@
 
 .center{
     margin: auto;
-    padding: 50px;
+    padding: 30px;
    /* width: 50%; */
     display:flex;
     flex-direction: row;
@@ -17,9 +17,17 @@
     font-family: 'Signika', sans-serif;
 }
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    #homeIntroduction {
+        margin-bottom: 50vh;
+    }
+}
+
+
 #homeIntroduction {
     color:white;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .button{
@@ -130,13 +138,13 @@
 }
 
 #footer {
-    margin-top: 20px;
+    margin-top: 50px;
     height: 20px;
     background-color: black;
     font-size: 10px;
     color: lightgray;
     text-align: center;
-    position:absolute;
+    position: fixed;
     bottom:0;
     width:100%;
 }
@@ -154,7 +162,7 @@
 #intro {
     font-size: 20px;
     text-align: center;
-    color: green;
+    color: #1DB954;
 }
 
 #refreshIcon {
@@ -168,13 +176,14 @@
 
 #songContainer {
     justify-content: center;
+    flex-grow: inherit;
 }
 
 #welcomeDashboard, #registrationHeader {
     margin-top: 10px;
     font-size: 20px;
     text-align: center;
-    color: green;
+    color: #1DB954;
 }
 
 
