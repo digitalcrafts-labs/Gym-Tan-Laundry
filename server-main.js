@@ -336,7 +336,7 @@ function getRandomGymRecommendation (length){
 };
 
 function getRandomTanRecommendation (length){
-    const tanGenres = ["chill", "idm", "indie-pop", "groove", "hip-hop", "indie-pop", "r-n-b", "pop", "road-trip", "summer"];
+    const tanGenres = ["idm", "indie-pop", "groove", "hip-hop", "indie-pop", "r-n-b", "pop", "road-trip", "summer"];
     let tanGenre = tanGenres[Math.floor(Math.random() * tanGenres.length)];
     let tanDanceability = (Math.random() * (0.2 - .7) + .7).toFixed(1);
     let tanPopularity = (Math.random() * (10 - 100) + 100).toFixed(0);
@@ -345,9 +345,9 @@ function getRandomTanRecommendation (length){
   };
   
   function getRandomLaundryRecommendation (length){
-    const laundryGenres = ["acoustic", "chill", "guitar", "happy", "indie", "study", "pop"];
+    const laundryGenres = ["acoustic", "ambient", "chill", "folk", "guitar", "happy", "indie", "study", "singer-songwriter"];
     let laundryGenre = laundryGenres[Math.floor(Math.random() * laundryGenres.length)];
-    let laundryDanceability = (Math.random() * (0.1 - .5) + .5).toFixed(1);
+    let laundryDanceability = (Math.random() * (0.1 - .4) + .4).toFixed(1);
     let laundryPopularity = (Math.random() * (20 - 100) + 100).toFixed(0);
     let laundryUrl = `https://api.spotify.com/v1/recommendations?limit=${length}&market=US&seed_genres=${laundryGenre}&target_danceability=${laundryDanceability}&min_energy=0.2&target_popularity=${laundryPopularity}&min_tempo=90&max_tempo=130&min_valence=.2`;
     return laundryUrl
