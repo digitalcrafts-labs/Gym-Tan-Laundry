@@ -2,7 +2,6 @@
 .center{
     margin: auto;
     padding: 30px;
-   /* width: 50%; */
     display:flex;
     flex-direction: row;
     justify-content: center;
@@ -12,7 +11,7 @@
     background-color: black;
     background-size: cover;
     background-image:url('/images/headphones.jpg');
-    height: 100%;
+    height: 100vh;
     width:  100%;
     font-family: 'Signika', sans-serif;
 }
@@ -44,18 +43,6 @@
         transform: scale(1.3);
 }
 
-/* #modalBtnT, #modalBtnL, #modalBtn{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding:0px;
-    border:  2px solid transparent;
-    }
-
-#modalBtnT, #modalBtnL, #modalBtn:hover{
-    -webkit-transform: scale(1.3);
-        transform: scale(1.3); */
-
 .closeBtn{
     float: right;
     font-size: 30px;
@@ -70,7 +57,6 @@
     height: 100%;
     width: 100%;
     overflow: auto;
-    /* background-color: rgba(250, 244, 244, 0.5); */
 }
 .modal-content{
     background-color: rgb(107, 109, 108);
@@ -86,8 +72,6 @@
 .modal-header{
     background-color: rgb(126, 129, 129);
     justify-content: center;
-    /* display: flex; */
-    /* -webkit-box-align: start; */
     padding: 0;
 }
 
@@ -96,12 +80,6 @@
     text-decoration: none;
     cursor: pointer;
 }
-
-/* body {
-    height: 100vh;
-    background-image: url('images/headphones_long_wire.jpg');
-    background-size: cover;
-} */
 
 .simple-login-container{
     width:300px;
