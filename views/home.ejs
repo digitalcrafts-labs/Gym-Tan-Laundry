@@ -1,38 +1,48 @@
 <%- include('partials/header.ejs') %>
-  <div class="center">
+<!-- Div for homepage buttons -->
+  <div id="gtlContainer" class="container">
+    <div class="center">
+<!-- Gym Button -->
     <button id="modalBtn" class="button">
-      <image class="col-sm-12 col-md-12 col-lg-12" src="images/G.png"></image>
-
+      <image id="gymImg" class="col-sm-12 col-md-12 col-lg-12" src="images/Gym.png"></image>
     </button>
-    <div id="simpleModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <spam class="closeBtn">&times;</spam>
-          <h4>Select size of Playlist:</h4>
-        </div>
-        <div class="modal-body">
-        <form method="POST" action="/modal-input">
-          <input type="radio" id="smallList" name="songList" value="5" required>
-          <input type="hidden" name="playListType" value="GYM">
-          <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumList" name="songList" value="10" required>
-          <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeList" name="songList" value="15" required>
-          <label for="largeList">Large(15 songs)</label><br>
-          <button type="submit" id="playlistSubmitButton">Submit</button>
-        </form>
-        </div>
-      </div>
-    </div>
+<!-- Laundry Button -->
     <button id="modalBtnT" class="button">
-      <image class="col-sm-12 col-md-12 col-lg-12" src="images/T.png"></image>
-    
+      <image class="col-sm-12 col-md-12 col-lg-12" src="images/Tan.png"></image>
     </button>
-    
+<!-- Laundry Button -->
+    <button id="modalBtnL" class="button">
+      <image class="col-sm-12 col-md-12 col-lg-12" src="images/Laundry.png"></image>
+    </button>
+    </div>
+  </div>
+  <div id="modals">
+<!-- Modal for Gym Below -->
+<div id="simpleModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="closeBtn">&times;</span>
+      <h4>Select size of Playlist:</h4>
+    </div>
+    <div class="modal-body">
+    <form method="POST" action="/modal-input">
+      <input type="radio" id="smallList" name="songList" value="5" required>
+      <input type="hidden" name="playListType" value="GYM">
+      <label for="smallList">Small(5 songs)</label><br>
+      <input type="radio" id="mediumList" name="songList" value="10" required>
+      <label for="mediumList">Medium(10 songs)</label><br>
+      <input type="radio" id="largeList" name="songList" value="15" required>
+      <label for="largeList">Large(15 songs)</label><br>
+      <button type="submit" id="playlistSubmitButton">Submit</button>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Modal for Tan Below -->
     <div id="simpleModalT" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <spam class="closeBtn">&times;</spam>
+          <span class="closeBtn">&times;</span>
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
@@ -46,17 +56,14 @@
           <label for="largeList">Large(15 songs)</label><br>
         </form>
           <button type="submit" id="playlistSubmitButtonT">Submit</button>
-
         </div>
       </div>
     </div>
-    <br>
-    <button id="modalBtnL" class="button">
-      <image class="col-sm-12 col-md-12 col-lg-12" src="images/L.png"></image>
-    </button>
+<!-- Modal for Laundry Below -->
     <div id="simpleModalL" class="modal">
       <div class="modal-content">
         <div class="modal-header">
+          <span class="closeBtn">&times;</span>
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
@@ -74,12 +81,14 @@
       </div>
     </div>
   </div>
-  <div id="introContainer" class="container center">
+<!-- Introduction below -->
+  <div id="introContainer" class="container">
    <p id="homeIntroduction" class="text-center">We're here to make creating your own playlists easier. 
        <br>
        Select one of the categories above and we will generate a unique playlist for you! </p>
   </div>
-<!-- Script for Crystal's Modals -->
+<!-- Script for Modals -->
   <script src="/style.js"></script>
   <script src="/index.js"></script>
+<!--Footer EJS Partial  -->
 <%- include('partials/footer.ejs') %>
