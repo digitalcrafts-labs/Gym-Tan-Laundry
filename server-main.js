@@ -204,6 +204,7 @@ app.post('/registration2', (req,res,next) => {
 
 app.post('/modal-input', (req,res,next) => {
      playListType = req.body.playListType;
+     console.log(req.body)
      songList = req.body.songList;
     
     if(playListType === "GYM") {
