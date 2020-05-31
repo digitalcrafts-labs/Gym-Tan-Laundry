@@ -3,15 +3,15 @@
   <div id="gtlContainer" class="container">
     <div class="center">
 <!-- Gym Button -->
-    <button id="modalBtn" class="button">
+    <button id="modalBtn" class="button" value="G">
       <image id="gymImg" class="col-sm-12 col-md-12 col-lg-12" src="images/Gym.png"></image>
     </button>
 <!-- Laundry Button -->
-    <button id="modalBtnT" class="button">
+    <button id="modalBtnT" class="button" value="T">
       <image class="col-sm-12 col-md-12 col-lg-12" src="images/Tan.png"></image>
     </button>
 <!-- Laundry Button -->
-    <button id="modalBtnL" class="button">
+    <button id="modalBtnL" class="button" value="L">
       <image class="col-sm-12 col-md-12 col-lg-12" src="images/Laundry.png"></image>
     </button>
     </div>
@@ -21,7 +21,7 @@
 <div id="simpleModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <span class="closeBtn">&times;</span>
+      <span id="gCloseBtn" class="closeBtn">&times;</span>
       <h4>Select size of Playlist:</h4>
     </div>
     <div class="modal-body">
@@ -42,20 +42,20 @@
     <div id="simpleModalT" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="closeBtn">&times;</span>
+          <span id="tCloseBtn" class="closeBtn">&times;</span>
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
-          <form method="POST" action="/modal-input">
-          <input type="radio" id="smallListT" name="songListT" value="5" required>
+        <form method="POST" action="/modal-input">
+          <input type="radio" id="smallListT" name="songList" value="5" required>
           <input type="hidden" name="playListType" value="TAN">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListT" name="songListT" value="10" required>
+          <input type="radio" id="mediumListT" name="songList" value="10" required>
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListT" name="songListT" value="15" required>
+          <input type="radio" id="largeListT" name="songList" value="15" required>
           <label for="largeList">Large(15 songs)</label><br>
-        </form>
           <button type="submit" id="playlistSubmitButtonT">Submit</button>
+        </form>  
         </div>
       </div>
     </div>
@@ -63,20 +63,20 @@
     <div id="simpleModalL" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="closeBtn">&times;</span>
+          <span id="lCloseBtn" class="closeBtn">&times;</span>
           <h4>Select size of Playlist:</h4>
         </div>
         <div class="modal-body">
-        <form method="POST" action="/modal-input"></form>
-          <input type="radio" id="smallListL" name="songListL" value="5" required>
+        <form method="POST" action="/modal-input">
+          <input type="radio" id="smallListL" name="songList" value="5" required>
           <input type="hidden" name="playListType" value="LAUNDRY">
           <label for="smallList">Small(5 songs)</label><br>
-          <input type="radio" id="mediumListL" name="songListL" value="10" required>
+          <input type="radio" id="mediumListL" name="songList" value="10" required>
           <label for="mediumList">Medium(10 songs)</label><br>
-          <input type="radio" id="largeListL" name="songListL" value="15" required>
+          <input type="radio" id="largeListL" name="songList" value="15" required>
           <label for="largeList">Large(15 songs)</label><br>
-        </form>
           <button type="submit" id="playlistSubmitButtonL">Submit</button>
+        </form>  
         </div>
       </div>
     </div>
@@ -89,6 +89,6 @@
   </div>
 <!-- Script for Modals -->
   <script src="/style.js"></script>
-  <script src="/index.js"></script>
+  <!-- <script src="/index.js"></script> -->
 <!--Footer EJS Partial  -->
 <%- include('partials/footer.ejs') %>

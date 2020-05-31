@@ -10,7 +10,6 @@ const flash = require('connect-flash');
 const axios = require('axios');
 const qs = require('qs');
 const randomstring = require("randomstring");
-var spotifyWebApi = require('spotify-web-api-node');
 const bcrypt = require('bcrypt');
 const saltRounds = 6;
 var url = '';
@@ -19,6 +18,11 @@ var playListType = '';
 var songList = '';
 const PORT = process.env.PORT
 let appTimer = 0;
+let clientTimer = 0;
+let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
+let applicationAccessToken = "";
+let clientAccessToken = "";
+let clientTokenObj = {};
 
 
 passport.use(
@@ -74,12 +78,7 @@ app.use(require('./routes'));
 app.use(refreshAppToken);
 app.use(isLoggedIn);
 
-let configString = process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET;
-let applicationAccessToken = "";
-let clientAccessToken = "";
-let clientTokenObj = {};
 
-var spotifyApi = new spotifyWebApi();
 
 // Get Public access token and start the server
 getAppAccessToken()
@@ -143,7 +142,7 @@ app.get('/display-after-callback', function(req, res, next) {
     });
   }) 
 
-app.get('/push-to-playlist', function(req, res, next) {
+app.get('/push-to-playlist', sessionExpired, function(req, res, next) {
       axios.post(`https://api.spotify.com/v1/users/${req.username}/playlists`, {
           "name": `GTL ${playListType} ${songList}`,
           "public": "true"
@@ -171,7 +170,6 @@ app.get('/push-to-playlist', function(req, res, next) {
       })
       .catch(error => {
           console.log(`OOPS! ${error}`);
-          console.log(clientAccessToken);
       })
   })
     
@@ -204,7 +202,6 @@ app.post('/registration2', (req,res,next) => {
 
 app.post('/modal-input', (req,res,next) => {
      playListType = req.body.playListType;
-     console.log(req.body)
      songList = req.body.songList;
     
     if(playListType === "GYM") {
@@ -222,27 +219,9 @@ app.get('/', function(req, res, next) {
     res.render('home');
 });
 
-app.get('/login', function(req, res, next) {
-    res.render('login');
-})
-
-app.post('/login', function(req, res, next) {
-    res.send('Login route');
-    // should have authentication
-    // redirects to profile
-});
-
-// app.get('/dashboard', function(req, res, next) {
-//     res.render('dashboard', {
-//     });
-//     // res.send('Profile route');
-//     // render profile
-// });
-
 app.get('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
-    // redirects to /
 });
 
 /*=====================================================================================================================================*/
@@ -301,6 +280,19 @@ function refreshAppToken(req, res, next) {
         } else {
             next();
         }
+    }
+}
+
+// This function is called when addToPlaylistButton is pressed. The button is only available
+// when user logs in. passport is set on the session object when user authenticates. After session
+// expires req.session.passport will be undefined meaning user will no longer have a valid token
+// because session is set expire after a hour when token would have expired and user is redirected
+// back to home page
+function sessionExpired(req, res, next) {
+    if(!req.session.passport) {
+        res.redirect('/');
+    } else {
+        next();
     }
 }
 
