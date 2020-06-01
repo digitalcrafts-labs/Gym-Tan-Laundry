@@ -19,7 +19,6 @@
 * [Passport JS](http://www.passportjs.org/)
 * [Bootstrap](https://getbootstrap.com/)
 * [EJS](https://ejs.co/)
-* [Passport](http://www.passportjs.org/)
 
 ## Authors
 
